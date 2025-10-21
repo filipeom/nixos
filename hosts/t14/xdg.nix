@@ -40,7 +40,6 @@
     # "nvim/after/plugin/lsp.lua".source = ../../dotfiles/nvim/after/plugin/lsp.lua;
     "nvim/after/plugin/telescope.lua".source = ../../dotfiles/nvim/after/plugin/telescope.lua;
     "nvim/after/plugin/treesitter.lua".source = ../../dotfiles/nvim/after/plugin/treesitter.lua;
-    "nvim/after/plugin/vimtex.lua".source = ../../dotfiles/nvim/after/plugin/vimtex.lua;
     "nvim/after/plugin/mason.lua".source = ../../dotfiles/nvim/after/plugin/mason.lua;
   };
 

@@ -143,12 +143,14 @@ return {
       build = {
         executable = 'latexmk',
         args = { '-pdf', '-interaction=nonstopmode', '-synctex=1', '%f' },
-        onSave = false,
-        forwardSearchAfter = false,
+        onSave = true,
+        forwardSearchAfter = true,
       },
       forwardSearch = {
-        executable = nil,
-        args = {},
+        executable = 'zathura',
+        args = {
+          '--synctex-forward', '%l:1:%f', '%p'
+        },
       },
       chktex = {
         onOpenAndSave = false,
