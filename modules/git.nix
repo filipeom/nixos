@@ -8,6 +8,11 @@
     ".direnv/"
     ".envrc"
   ];
+  signing = {
+    format = "openpgp";
+    key = "88A27E44DCAF7B34";
+    signByDefault = true;
+  };
   extraConfig = {
     credential.helper = "store";
   };

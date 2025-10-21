@@ -25,6 +25,16 @@
   programs = {
     git = import ../../modules/git.nix { inherit config pkgs lib; };
     zsh = import ../../modules/zsh.nix { inherit config pkgs lib; };
+    gpg = { enable = true; };
+  };
+
+  services.gpg-agent = {
+    enable = true;
+    defaultCacheTtl = 1800;
+    enableSshSupport = true;
+    enableZshIntegration = true;
+    pinentry.package = pkgs.pinentry-tty;
+    pinentry.program = "pinentry-tty";
   };
 
   home.sessionPath = [
