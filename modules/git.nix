@@ -10,7 +10,7 @@
   ];
   signing = {
     format = "openpgp";
-    key = "88A27E44DCAF7B34";
+    key = "74A869792DE9DF80!";
     signByDefault = true;
   };
   extraConfig = {
