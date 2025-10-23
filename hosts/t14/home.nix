@@ -30,12 +30,12 @@
 
   services.gpg-agent = {
     enable = true;
+    noAllowExternalCache = true;
     defaultCacheTtl = 1800;
     enableSshSupport = true;
     enableZshIntegration = true;
-    noAllowExternalCache = true;
-    pinentry.package = pkgs.pinentry-tty;
-    pinentry.program = "pinentry-tty";
+    pinentry.package = pkgs.pinentry-qt;
+    pinentry.program = "pinentry-qt";
   };
 
   home.sessionPath = [
