@@ -33,6 +33,7 @@
     defaultCacheTtl = 1800;
     enableSshSupport = true;
     enableZshIntegration = true;
+    noAllowExternalCache = true;
     pinentry.package = pkgs.pinentry-tty;
     pinentry.program = "pinentry-tty";
   };
