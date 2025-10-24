@@ -1,4 +1,4 @@
-vim.lsp.enable({ 'lua_ls', 'ocamllsp', 'rust_analyzer', 'texlab' })
+vim.lsp.enable({ 'lua_ls', 'ocamllsp', 'rust_analyzer', 'texlab', 'tinymist' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function (event)
