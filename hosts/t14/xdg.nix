@@ -24,6 +24,7 @@
     "kitty/kitty.conf".source = ../../dotfiles/kitty/kitty.conf;
     "kitty/dayfox.conf".source = ../../dotfiles/kitty/dayfox.conf;
     "zathura/zathurarc".source = ../../dotfiles/zathura/zathura.conf;
+    "waybar".source = ../../dotfiles/waybar;
     # TODO: Find a better way to do this
     "nvim/init.lua".source = ../../dotfiles/nvim/init.lua;
     "nvim/lua/filipeom/init.lua".source = ../../dotfiles/nvim/lua/filipeom/init.lua;
