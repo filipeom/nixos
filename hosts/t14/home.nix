@@ -35,6 +35,8 @@
 
     services = {
       waybar = import ../../modules/services/waybar.nix { inherit config pkgs lib; };
+      hyprpaper = import ../../modules/services/hyprpaper.nix { inherit config pkgs lib; };
+      hypridle = import ../../modules/services/hypridle.nix { inherit config pkgs lib; };
     };
   };
 
