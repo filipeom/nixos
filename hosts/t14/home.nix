@@ -23,8 +23,8 @@
 
   # programs
   programs = {
-    git = import ../../modules/git.nix { inherit config pkgs lib; };
-    zsh = import ../../modules/zsh.nix { inherit config pkgs lib; };
+    git = import ../../modules/programs/git.nix { inherit config pkgs lib; };
+    zsh = import ../../modules/programs/zsh.nix { inherit config pkgs lib; };
     gpg = { enable = true; };
   };
 
