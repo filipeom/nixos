@@ -28,6 +28,10 @@
     gpg = { enable = true; };
   };
 
+  systemd.user.services = {
+    waybar = import ../../modules/services/waybar.nix { inherit config pkgs lib; };
+  };
+
   services.gpg-agent = {
     enable = true;
     noAllowExternalCache = true;
