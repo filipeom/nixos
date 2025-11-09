@@ -21,6 +21,8 @@
     bindkey -s ^f "tmux-sessionizer\n"
 
     eval $(opam env)
+
+    tmpd() { cd $(mktemp -d) }
     '';
 
 }
