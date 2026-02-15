@@ -1,5 +1,6 @@
 vim.lsp.enable({
   'basedpyright',
+  'jdtls',
   'lua_ls',
   'ocamllsp',
   'rust_analyzer',
