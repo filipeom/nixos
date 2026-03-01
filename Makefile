@@ -1,7 +1,7 @@
 .PHONY: update clean
 
 update:
-	home-manager switch --flake .#t14
+	home-manager switch --flake .#helm
 
 clean:
 	nix-collect-garbage -d
