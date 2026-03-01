@@ -22,5 +22,20 @@
           modules = [ hosts/helm/home.nix ];
         };
       };
+
+      nixosConfigurations = {
+        vessel-01 = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./hosts/vessel-01/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.filipe = import ./hosts/vessel-01/home.nix;
+            }
+          ];
+        };
+      };
     };
 }
