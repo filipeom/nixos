@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 {
   enable = true;
-  dotDir = ".config/zsh";
+  dotDir = "${config.xdg.configHome}/zsh";
   history.path = "${config.xdg.dataHome}/zsh/zsh_history";
   oh-my-zsh = {
     enable = true;

@@ -1,8 +1,11 @@
 { lib, pkgs, config, ... }:
 {
   enable = true;
-  userName = "Filipe Marques";
-  userEmail = "filipe.s.marques@tecnico.ulisboa.pt";
+  settings = {
+    user.name = "Filipe Marques";
+    user.email = "filipe.s.marques@tecnico.ulisboa.pt";
+    credential.helper = "store";
+  };
   ignores = [
     ".files"
     ".direnv/"
@@ -12,8 +15,5 @@
     format = "openpgp";
     key = "88A27E44DCAF7B34";
     signByDefault = true;
-  };
-  extraConfig = {
-    credential.helper = "store";
   };
 }
