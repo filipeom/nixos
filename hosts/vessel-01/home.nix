@@ -7,6 +7,7 @@
       neovim
       git
       btop
+      direnv
     ];
 
     username = "filipe";
