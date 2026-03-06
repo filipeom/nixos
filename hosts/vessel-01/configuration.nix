@@ -71,7 +71,7 @@
   users.users.filipe = {
     isNormalUser = true;
     description = "filipe";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "podman" ];
     shell = pkgs.zsh;
     packages = with pkgs; [];
     openssh.authorizedKeys.keys = [
@@ -133,7 +133,8 @@
     enable = true;
     url = "https://github.com/formalsec"; # or your org
     tokenFile = "/var/lib/github-runner/token";    # Create this file manually once
-    user = "root";
+    user = "filipe";
+    group = "users";
     serviceOverrides.StateDirectory = [
       "github-runner/vessel-runner" # module default
       "github-runner-work/vessel-runner"
@@ -150,6 +151,10 @@
       bzip2
       bubblewrap
     ];
+    serviceOverrides = {
+      ProtectProc = "default";
+      SupplementaryGroups = [ "podman" ];
+    };
   };
 
   # Open ports in the firewall.
