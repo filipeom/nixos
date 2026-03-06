@@ -16,14 +16,15 @@
     stateVersion = "25.11";
   };
 
+  imports = [
+    ../../modules/programs/git.nix
+    ../../modules/programs/zsh.nix
+  ];
+
   # XDG
   xdg = import ./xdg.nix { inherit config pkgs lib; };
 
   # programs
-  programs = {
-    git = import ../../modules/programs/git.nix { inherit config pkgs lib; };
-    zsh = import ../../modules/programs/zsh.nix { inherit config pkgs lib; };
-  };
 
   home.sessionVariables = {
     EDITOR = "nvim";
