@@ -11,6 +11,12 @@
     stateVersion = "25.11";
   };
 
+  imports = [
+    ../../modules/programs/git.nix
+    ../../modules/programs/zsh.nix
+  ];
+
+
   # XDG
   xdg = import ./xdg.nix { inherit config pkgs lib; };
 
@@ -21,12 +27,26 @@
     defaultFonts.serif = ["Liberation Serif"];
   };
 
-  # programs
-  programs = {
-    git = import ../../modules/programs/git.nix { inherit config pkgs lib; };
-    zsh = import ../../modules/programs/zsh.nix { inherit config pkgs lib; };
-    gpg = { enable = true; };
+   # programs
+  programs.git = {
+    signing = {
+      format = "openpgp";
+      key = "88A27E44DCAF7B34";
+      signByDefault = true;
+    };
   };
+
+  programs.zsh = {
+    initContent = ''
+      bindkey -s ^f "tmux-sessionizer\n"
+
+      eval $(opam env)
+
+      tmpd() { cd $(mktemp -d) }
+      '';
+  };
+
+  programs.gpg = { enable = true; };
 
   systemd.user = {
     targets = {
