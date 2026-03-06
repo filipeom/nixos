@@ -28,6 +28,21 @@
   # Set your time zone.
   time.timeZone = "Europe/Lisbon";
 
+  virtualisation.docker.enable = false;
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    dockerSocket.enable = true;
+  };
+
+  virtualisation.containers.containersConf.settings = {
+    containers = {
+      # Mount the /nix store as read-only natively via the container engine
+      volumes = [ "/nix:/nix:ro" ];
+    };
+  };
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -56,7 +71,7 @@
   users.users.filipe = {
     isNormalUser = true;
     description = "filipe";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [];
     openssh.authorizedKeys.keys = [
@@ -72,10 +87,17 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    wget
+    curl
     neovim
     git
+    gnutar 
+    gzip 
+    unzip 
+    gcc 
+    gnumake
+    gawk
+    bzip2
     btop
   ];
 
@@ -92,6 +114,41 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # Enable mDNS/Avahi for .local resolution
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true; # Allows the system to resolve other .local addresses
+    openFirewall = true; # Automatically opens the necessary UDP port (5353)
+    publish = {
+      enable = true;
+      addresses = true;
+      userServices = true;
+    };
+  };
+
+  services.github-runners.vessel-runner = {
+    enable = true;
+    url = "https://github.com/formalsec"; # or your org
+    tokenFile = "/var/lib/github-runner/token";    # Create this file manually once
+    user = "root";
+    serviceOverrides.StateDirectory = [
+      "github-runner/vessel-runner" # module default
+      "github-runner-work/vessel-runner"
+    ];
+    workDir = "/var/lib/github-runner-work/vessel-runner";
+    nodeRuntimes = [ "node20" "node24" ];
+    extraPackages = with pkgs; [ 
+      docker 
+      curl
+      gnumake
+      gcc 
+      gnumake
+      gawk
+      bzip2
+      bubblewrap
+    ];
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -105,5 +162,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }

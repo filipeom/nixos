@@ -8,6 +8,7 @@
       git
       btop
       direnv
+      docker-compose
     ];
 
     username = "filipe";
