@@ -91,14 +91,17 @@
     curl
     neovim
     git
-    gnutar 
-    gzip 
-    unzip 
-    gcc 
+    gnutar
+    gzip
+    unzip
+    gcc
     gnumake
     gawk
     bzip2
     btop
+    ripgrep
+    nodejs_24
+    python314
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -137,11 +140,11 @@
     ];
     workDir = "/var/lib/github-runner-work/vessel-runner";
     nodeRuntimes = [ "node20" "node24" ];
-    extraPackages = with pkgs; [ 
-      docker 
+    extraPackages = with pkgs; [
+      docker
       curl
       gnumake
-      gcc 
+      gcc
       gnumake
       gawk
       bzip2
