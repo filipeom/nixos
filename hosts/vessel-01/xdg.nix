@@ -8,6 +8,5 @@
 
   configFile = {
     "tmux/tmux.conf".source = ../../dotfiles/tmux/tmux.conf;
-    "nvim".source = ../../dotfiles/nvim;
   };
 }

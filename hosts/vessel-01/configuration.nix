@@ -99,9 +99,11 @@
     gawk
     bzip2
     btop
-    ripgrep
     nodejs_24
     python314
+    rustup
+    ripgrep
+    tree-sitter
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

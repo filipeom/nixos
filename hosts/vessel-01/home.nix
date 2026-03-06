@@ -4,7 +4,6 @@
     packages = with pkgs; [
       home-manager
       tmux
-      neovim
       git
       btop
       direnv
@@ -20,6 +19,7 @@
   imports = [
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
+    ../../modules/programs/nvim.nix
   ];
 
   # XDG

@@ -26,23 +26,6 @@
     "zathura/zathurarc".source = ../../dotfiles/zathura/zathura.conf;
     "waybar".source = ../../dotfiles/waybar;
     "hypr".source = ../../dotfiles/hypr;
-    # TODO: Find a better way to do this
-    "nvim/init.lua".source = ../../dotfiles/nvim/init.lua;
-    "nvim/lua/filipeom/init.lua".source = ../../dotfiles/nvim/lua/filipeom/init.lua;
-    "nvim/lua/filipeom/cmd.lua".source = ../../dotfiles/nvim/lua/filipeom/cmd.lua;
-    "nvim/lua/filipeom/plugins.lua".source = ../../dotfiles/nvim/lua/filipeom/plugins.lua;
-    "nvim/lua/filipeom/remap.lua".source = ../../dotfiles/nvim/lua/filipeom/remap.lua;
-    "nvim/lua/filipeom/set.lua".source = ../../dotfiles/nvim/lua/filipeom/set.lua;
-    "nvim/lua/filipeom/lsp.lua".source = ../../dotfiles/nvim/lua/filipeom/lsp.lua;
-    "nvim/lsp".source = ../../dotfiles/nvim/lsp;
-    "nvim/after/plugin/barbar.lua".source = ../../dotfiles/nvim/after/plugin/barbar.lua;
-    "nvim/after/plugin/cmp.lua".source = ../../dotfiles/nvim/after/plugin/cmp.lua;
-    "nvim/after/plugin/colors.lua".source = ../../dotfiles/nvim/after/plugin/colors.lua;
-    "nvim/after/plugin/fugitive.lua".source = ../../dotfiles/nvim/after/plugin/fugitive.lua;
-    # "nvim/after/plugin/lsp.lua".source = ../../dotfiles/nvim/after/plugin/lsp.lua;
-    "nvim/after/plugin/telescope.lua".source = ../../dotfiles/nvim/after/plugin/telescope.lua;
-    "nvim/after/plugin/treesitter.lua".source = ../../dotfiles/nvim/after/plugin/treesitter.lua;
-    "nvim/after/plugin/mason.lua".source = ../../dotfiles/nvim/after/plugin/mason.lua;
   };
 
   mimeApps.defaultApplications = {

@@ -14,6 +14,7 @@
   imports = [
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
+    ../../modules/programs/nvim.nix
   ];
 
 
