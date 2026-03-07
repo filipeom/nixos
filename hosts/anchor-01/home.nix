@@ -8,7 +8,7 @@
     username = "filipe";
     homeDirectory = "/home/${config.home.username}";
 
-    stateVersion = "25.11";
+    stateVersion = "25.05";
   };
 
   imports = [
@@ -24,5 +24,6 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    PATH = "$HOME/.nix-profile/bin:$PATH";
   };
 }
