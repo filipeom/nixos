@@ -10,10 +10,13 @@
       ./hardware-configuration.nix
     ];
 
+  boot.kernelModules = [ "nct6775" ];
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+
+  powerManagement.powertop.enable = true;
 
   networking.hostName = "vessel-01"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
