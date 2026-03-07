@@ -21,6 +21,10 @@
           inherit pkgs;
           modules = [ hosts/helm/home.nix ];
         };
+        anchor-01 = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ hosts/anchor-01/home.nix ];
+        };
       };
 
       nixosConfigurations = {
