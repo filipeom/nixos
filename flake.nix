@@ -2,7 +2,7 @@
   description = "My home manaer config";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -14,7 +14,10 @@
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in {
       homeConfigurations = {
         helm = home-manager.lib.homeManagerConfiguration {
@@ -30,6 +33,7 @@
       nixosConfigurations = {
         vessel-01 = nixpkgs.lib.nixosSystem {
           inherit system;
+          inherit pkgs;
           modules = [
             ./hosts/vessel-01/configuration.nix
             home-manager.nixosModules.home-manager
