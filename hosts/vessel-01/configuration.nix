@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
     ];
 
+  boot.runSize = "50%";
   boot.kernelModules = [ "nct6775" ];
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -140,12 +141,14 @@
     tokenFile = "/var/lib/github-runner/token";    # Create this file manually once
     user = "filipe";
     group = "users";
-    serviceOverrides.StateDirectory = [
-      "github-runner/vessel-runner" # module default
-      "github-runner-work/vessel-runner"
-    ];
-    workDir = "/var/lib/github-runner-work/vessel-runner";
+    # Uncomment the following lines if we need more disk space for the runners
+    # serviceOverrides.StateDirectory = [
+    #   "github-runner/vessel-runner" # module default
+    #   "github-runner-work/vessel-runner"
+    # ];
+    # workDir = "/var/lib/github-runner-work/vessel-runner";
     nodeRuntimes = [ "node20" "node24" ];
+    extraLabels = [ "self-hosted-nix" ];
     extraPackages = with pkgs; [
       docker
       curl
