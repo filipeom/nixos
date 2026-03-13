@@ -31,8 +31,8 @@
    # programs
   programs.git = {
     signing = {
-      format = "openpgp";
-      key = "88A27E44DCAF7B34";
+      format = "ssh";
+      key = "~/.ssh/id_helm.pub";
       signByDefault = true;
     };
   };
@@ -47,7 +47,7 @@
       '';
   };
 
-  programs.gpg = { enable = true; };
+  programs.gpg = { enable = false; };
 
   systemd.user = {
     targets = {
@@ -63,13 +63,18 @@
 
 
   services.gpg-agent = {
-    enable = true;
+    enable = false;
     noAllowExternalCache = true;
     defaultCacheTtl = 1800;
-    enableSshSupport = true;
+    enableSshSupport = false;
     enableZshIntegration = true;
     pinentry.package = pkgs.pinentry-qt;
     pinentry.program = "pinentry-qt";
+  };
+
+  services.ssh-agent = {
+    enable = true;
+    defaultMaximumIdentityLifetime = 1800;
   };
 
   home.sessionPath = [
