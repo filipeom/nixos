@@ -20,6 +20,19 @@
   powerManagement.powertop.enable = true;
 
   networking.hostName = "vessel-01"; # Define your hostname.
+  networking.useDHCP = false;
+  networking.interfaces.enp3s0 = {
+    ipv4.addresses = [{
+      address = "192.168.1.110";
+      prefixLength = 24;
+    }];
+    ipv6.addresses = [{
+      address = "fd00::110";
+      prefixLength = 64;
+    }];
+  };
+  networking.defaultGateway = "192.168.1.1";
+  networking.nameservers = [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
