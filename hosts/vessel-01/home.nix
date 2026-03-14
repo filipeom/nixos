@@ -27,6 +27,12 @@
 
   # programs
 
+  # serices
+  services.ssh-agent = {
+    enable = true;
+    defaultMaximumIdentityLifetime = 1800;
+  };
+
   home.sessionVariables = {
     EDITOR = "nvim";
   };
