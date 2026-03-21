@@ -8,14 +8,18 @@
 
   userDirs = {
     enable = true;
-    desktop = "${config.home.homeDirectory}/resources";
-    documents = "${config.home.homeDirectory}/resources";
+
+    desktop = "${config.home.homeDirectory}/desktop";
+    documents = "${config.home.homeDirectory}/documents";
     download = "${config.home.homeDirectory}/downloads";
-    music = "${config.home.homeDirectory}/areas/music";
-    pictures = "${config.home.homeDirectory}/resources/photos";
-    publicShare = "${config.home.homeDirectory}/";
-    templates = "${config.home.homeDirectory}/resources/templates";
-    videos = "${config.home.homeDirectory}/";
+
+    # PARA mapping
+    music = "${config.xdg.userDirs.documents}/areas/music";
+    pictures = "${config.xdg.userDirs.documents}/resources/photos";
+    templates = "${config.xdg.userDirs.documents}/resources/templates";
+
+    publicShare = "${config.home.homeDirectory}/public";
+    videos = "${config.home.homeDirectory}/videos";
   };
 
   # Some config files we need
