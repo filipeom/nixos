@@ -43,6 +43,19 @@
   # Disable networking (static ip above)
   networking.networkmanager.enable = true;
 
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    dockerSocket.enable = true;
+  };
+
+  virtualisation.containers.containersConf.settings = {
+    containers = {
+      # Mount the /nix store as read-only natively via the container engine
+      volumes = [ "/nix:/nix:ro" ];
+    };
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Lisbon";
 
@@ -82,6 +95,18 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcWHhvPTxv1epTRNYeoU0XMHPDNmDbn1Vuv2JTUdncZ filipe"
     ];
   };
+
+  security.sudo.extraRules = [
+    {
+      users = [ "filipe" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   # Allow unfree packages
   # nixpkgs.config.allowUnfree = true;
@@ -170,6 +195,13 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    glib
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
