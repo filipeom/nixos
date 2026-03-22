@@ -84,6 +84,10 @@
       "$fileManager" = "dolphin";
       "$menu" = "wofi --show drun";
 
+      exec-once = [
+        "nextcloud"
+      ];
+
       general = {
         gaps_in = 5;
         gaps_out = 10;
@@ -225,6 +229,16 @@
         gamma = 0.8;
       }
       ];
+    };
+  };
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      ipc = "on";
+      splash = false;
+      preload = [ "${../../dotfiles/wallpaper.jpg}" ];
+      wallpaper = [ ",${../../dotfiles/wallpaper.jpg}" ];
     };
   };
 
