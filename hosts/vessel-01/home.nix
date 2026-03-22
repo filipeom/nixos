@@ -2,18 +2,34 @@
 {
  home = {
     packages = with pkgs; [
-      home-manager
-      tmux
-      git
-      btop
-      direnv
-      docker-compose
-      # lsp
-      basedpyright
-
+      # System config pkgs
+      waybar
+      hypridle
+      hyprlock
+      hyprshot
       kitty
       wofi
       nerd-fonts.jetbrains-mono
+
+      # Social stuff
+      thunderbird
+      slack
+      zulip
+      mattermost-desktop
+      google-chrome
+
+      # Development
+      git
+      direnv
+      docker-compose
+      basedpyright
+
+      # Misc
+      home-manager
+      tmux
+      btop
+      keepassxc
+      nextcloud-client
     ];
 
     username = "filipe";
@@ -55,14 +71,53 @@
     '';
   };
 
+  programs.waybar.enable = true;
+
   wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs.hyprland;
     settings = {
+      monitor = ",preferred,auto,auto";
+
       "$mod" = "SUPER";
       "$terminal" = "kitty";
       "$fileManager" = "dolphin";
       "$menu" = "wofi --show drun";
+
+      general = {
+        gaps_in = 5;
+        gaps_out = 10;
+
+        border_size = 2;
+
+        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = "rgba(595959aa)";
+
+        resize_on_border = false;
+        allow_tearing = false;
+        layout = "master";
+      };
+
+      decoration = {
+        rounding = 10;
+        rounding_power = 2;
+
+        active_opacity = 1.0;
+        inactive_opacity = 1.0;
+      };
+
+      master = {
+        new_status = "master";
+        new_on_top = true;
+        orientation = "left";
+        mfact = 0.55;
+      };
+
+      misc = {
+        force_default_wallpaper = 1;
+        disable_hyprland_logo = true;
+      };
+
       input = {
         kb_layout = "pt";
         kb_variant = "";
@@ -75,6 +130,7 @@
         repeat_rate = 70;
         repeat_delay = 290;
       };
+
       bind = [
         "$mod, P, exec, $menu"
         "$mod SHIFT, RETURN, exec, $terminal"
@@ -119,8 +175,23 @@
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod SHIFT, 0, movetoworkspace, 10"
 
+        # Example special workspace (scratchpad)
+        "$mod, S, togglespecialworkspace, magic"
+        "$mod SHIFT, S, movetoworkspace, special:magic"
+
+        # Scroll through existing workspaces with mainMod + scroll
+        "$mod, mouse_down, workspace, e+1"
+        "$mod, mouse_up, workspace, e-1"
+
+        # Screenshots
+        ", PRINT, exec, hyprshot -m output"
+        "$mod, PRINT, exec, hyprshot -m region"
       ];
-      monitor = ",preferred,auto,auto";
+
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
+      ];
     };
   };
 
@@ -129,6 +200,14 @@
     enable = true;
     defaultMaximumIdentityLifetime = 1800;
   };
+
+  systemd.user = {
+    services = {
+      waybar = import ../../modules/services/waybar.nix { inherit config pkgs lib; };
+    };
+  };
+
+  services.hypridle.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";

@@ -6,7 +6,7 @@
     After="hyprland-session.target";
   };
   Service = {
-    ExecStart="/usr/bin/waybar";
+    ExecStart="${pkgs.waybar}/bin/waybar";
     Restart="on-failure";
     RestartSec=2;
     StandardOutput="journal";

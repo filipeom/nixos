@@ -10,6 +10,8 @@
       ./hardware-configuration.nix
     ];
 
+  hardware.bluetooth.enable = true;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -29,6 +31,10 @@
   networking.defaultGateway = "192.168.1.1";
   networking.nameservers = [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  networking.extraHosts = ''
+    192.168.1.124   cloud.filipeom.dev
+  '';
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -102,6 +108,10 @@
     ripgrep
     tree-sitter
     firefox
+    pavucontrol
+    playerctl
+    pulseaudio
+    bluez
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -143,6 +153,17 @@
       userServices = true;
     };
   };
+
+  # Use PipeWire
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;   # allows legacy ALSA apps
+    pulse.enable = true;  # PulseAudio compatibility
+    jack.enable = false;  # optional
+  };
+
+  # Enable Bluetooth daemon
+  services.blueman.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
