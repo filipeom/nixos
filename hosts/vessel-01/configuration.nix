@@ -121,6 +121,7 @@
     git
     gnutar
     gzip
+    zip
     unzip
     gcc
     gnumake
@@ -137,6 +138,7 @@
     playerctl
     pulseaudio
     bluez
+    cloudflare-warp
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -161,6 +163,18 @@
     settings = {
       animation = "matrix";
       lang = "pt";
+    };
+  };
+
+  services.cloudflare-warp.enable = true;
+
+  services.openvpn.servers = {
+    tecnico = {
+      # The `config` directive tells OpenVPN to load your external file
+      config = '' config /root/openvpn/tecnico.ovpn '';
+      updateResolvConf = true;
+      # Set to true if you want the VPN to connect automatically on boot
+      autoStart = false;
     };
   };
 
