@@ -4,10 +4,10 @@ let
   ecmasl-vim = pkgs.vimUtils.buildVimPlugin {
     name = "ecmasl-vim";
     src = pkgs.fetchFromGitHub {
-      owner = "wasp-platform";
+      owner = "formalsec";
       repo = "ecmasl-vim";
       rev = "master";
-      sha256 = "sha256-R/8yvS8L+2MshS4e8RAn+E/k+qO9vM2GzNqI6X3V/7U="; # Placeholder, will update if needed
+      sha256 = "sha256-MEn9Zdvesa/rK7EJg4DnaZK3uCvgEuQVWK0HQjaqiiA=";
     };
   };
 in
@@ -44,7 +44,7 @@ in
       playground
 
       # Custom
-      # ecmasl-vim
+      ecmasl-vim
     ];
 
     extraLuaConfig = ''
