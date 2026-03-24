@@ -3,6 +3,10 @@
  home = {
     packages = with pkgs; [
       home-manager
+      waybar
+      hypridle
+      hyprpaper
+      hyprshot
     ];
 
     username = "filipe";
@@ -49,6 +53,8 @@
 
   programs.gpg = { enable = false; };
 
+  programs.waybar.enable = true;
+
   systemd.user = {
     targets = {
       hyprland-session = import ../../modules/services/hyprland.nix { inherit config pkgs lib; };
@@ -56,11 +62,8 @@
 
     services = {
       waybar = import ../../modules/services/waybar.nix { inherit config pkgs lib; };
-      hyprpaper = import ../../modules/services/hyprpaper.nix { inherit config pkgs lib; };
-      hypridle = import ../../modules/services/hypridle.nix { inherit config pkgs lib; };
     };
   };
-
 
   services.gpg-agent = {
     enable = false;
@@ -75,6 +78,37 @@
   services.ssh-agent = {
     enable = true;
     defaultMaximumIdentityLifetime = 1800;
+  };
+
+  services.hypridle.enable = true;
+
+  services.hyprsunset = {
+    enable = true;
+    settings = {
+      max-gamma = 150;
+
+      profile = [
+        {
+          time = "7:30";
+          identity = true;
+        }
+        {
+          time = "20:00";
+          temperature = 4500;
+          gamma = 0.8;
+        }
+      ];
+    };
+  };
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      ipc = "on";
+      splash = false;
+      preload = [ "${../../dotfiles/wallpaper.jpg}" ];
+      wallpaper = [ ",${../../dotfiles/wallpaper.jpg}" ];
+    };
   };
 
   home.sessionPath = [

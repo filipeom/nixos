@@ -1,6 +1,9 @@
 { lib, pkgs, config, ... }:
 {
   Unit = {
-    Description="Hyprland session";
+    Description = "Hyprland compositor session";
+    BindsTo = [ "graphical-session.target" ];
+    Wants = [ "graphical-session-pre.target" ];
+    After = [ "graphical-session-pre.target" ];
   };
 }

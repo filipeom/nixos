@@ -29,7 +29,9 @@
     "kitty/dayfox.conf".source = ../../dotfiles/kitty/dayfox.conf;
     "zathura/zathurarc".source = ../../dotfiles/zathura/zathura.conf;
     "waybar".source = ../../dotfiles/waybar;
-    "hypr".source = ../../dotfiles/hypr;
+    "hypr/hyprland.conf".source = ../../dotfiles/hypr/hyprland.conf;
+    "hypr/hypridle.conf".source = ../../dotfiles/hypr/hypridle.conf;
+    "hypr/hyprlock.conf".source = ../../dotfiles/hypr/hyprlock.conf;
   };
 
   mimeApps.defaultApplications = {
