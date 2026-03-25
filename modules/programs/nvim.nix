@@ -1,15 +1,29 @@
 { pkgs, ... }:
 
 let
-  ecmasl-vim = pkgs.vimUtils.buildVimPlugin {
-    name = "ecmasl-vim";
-    src = pkgs.fetchFromGitHub {
-      owner = "formalsec";
-      repo = "ecmasl-vim";
-      rev = "master";
-      sha256 = "sha256-MEn9Zdvesa/rK7EJg4DnaZK3uCvgEuQVWK0HQjaqiiA=";
-    };
+  ecmasl-src = pkgs.fetchFromGitHub {
+    owner = "formalsec";
+    repo = "ecmasl-vim";
+    rev = "master";
+    sha256 = "sha256-phfmBLcWSLPnuMIOWNMfzXllRjEIbzFXWbzrWCgvRFo=";
   };
+
+  tree-sitter-ecmasl = pkgs.tree-sitter.buildGrammar {
+    language = "ecmasl";
+    version = "unstable";
+    src = ecmasl-src;
+    location = "tree-sitter-ecmasl";
+  };
+
+  ecmasl-vim = pkgs.vimUtils.buildVimPlugin {
+    pname = "ecmasl-vim";
+    version = "unstable";
+    src = ecmasl-src;
+  };
+
+  treesitter-with-ecmasl = pkgs.vimPlugins.nvim-treesitter.withPlugins (p:
+    pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ tree-sitter-ecmasl ]
+  );
 in
 {
   programs.neovim = {
@@ -40,10 +54,9 @@ in
       vim-vsnip
 
       # Treesitter
-      nvim-treesitter.withAllGrammars
+      treesitter-with-ecmasl
       playground
 
-      # Custom
       ecmasl-vim
     ];
 

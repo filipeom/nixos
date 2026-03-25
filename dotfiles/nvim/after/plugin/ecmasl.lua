@@ -1,0 +1,2 @@
+require("ecmasl").setup()
+
