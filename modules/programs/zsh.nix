@@ -1,8 +1,8 @@
 { lib, pkgs, config, ... }:
 {
   programs.zsh = {
-    dotDir = lib.mkDefault "${config.xdg.configHome}/zsh";
-    history.path = lib.mkDefault "${config.xdg.dataHome}/zsh/zsh_history";
+    dotDir = "${config.xdg.configHome}/zsh";
+    history.path = "${config.xdg.dataHome}/zsh/zsh_history";
     oh-my-zsh = {
       enable = lib.mkDefault true;
       plugins = lib.mkDefault [
@@ -11,7 +11,7 @@
       ];
       theme = lib.mkDefault "robbyrussell";
     };
-    shellAliases = lib.mkDefault {
+    shellAliases = {
       e = "$EDITOR";
       vi = "nvim";
       vim = "nvim";
