@@ -18,7 +18,7 @@
   imports = [
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
-    ../../modules/programs/nvim.nix
+    ../../modules/programs/neovim.nix
     # Services
     ../../modules/services/hyprsunset.nix
     ../../modules/services/hyprpaper.nix
@@ -37,6 +37,7 @@
 
    # programs
   programs.git = {
+    enable = true;
     signing = {
       format = "ssh";
       key = "~/.ssh/id_helm.pub";
@@ -45,6 +46,7 @@
   };
 
   programs.zsh = {
+    enable = true;
     initContent = ''
       bindkey -s ^f "tmux-sessionizer\n"
 
@@ -54,8 +56,8 @@
       '';
   };
 
-  programs.gpg = { enable = false; };
-
+  programs.neovim.enable = true;
+  programs.gpg.enable = false;
   programs.waybar.enable = true;
 
   systemd.user = {

@@ -1,13 +1,12 @@
 { lib, pkgs, config, ... }:
 {
   programs.git = {
-    enable = true;
     settings = {
-      user.name = "Filipe Marques";
-      user.email = "filipe.s.marques@tecnico.ulisboa.pt";
-      credential.helper = "store";
+      user.name = lib.mkDefault "Filipe Marques";
+      user.email = lib.mkDefault "filipe.s.marques@tecnico.ulisboa.pt";
+      credential.helper = lib.mkDefault "store";
     };
-    ignores = [
+    ignores = lib.mkDefault [
       ".files"
       ".direnv/"
       ".envrc"

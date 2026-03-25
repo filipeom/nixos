@@ -41,7 +41,7 @@
   imports = [
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
-    ../../modules/programs/nvim.nix
+    ../../modules/programs/neovim.nix
     ../../modules/programs/kitty.nix
     # Services
     ../../modules/services/hyprsunset.nix
@@ -52,6 +52,9 @@
   xdg = import ./xdg.nix { inherit config pkgs lib; };
 
   # programs
+  programs.git.enable = true;
+  programs.zsh.enable = true;
+  programs.neovim.enable = true;
   programs.kitty.enable = true;
   programs.waybar.enable = true;
 

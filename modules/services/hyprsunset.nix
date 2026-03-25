@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   services.hyprsunset = {
     settings = {
-      max-gamma = 150;
-      profile = [
+      max-gamma = lib.mkDefault 150;
+      profile = lib.mkDefault [
         {
           time = "7:00";
           temperature = 6000;

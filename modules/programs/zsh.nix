@@ -1,18 +1,17 @@
 { lib, pkgs, config, ... }:
 {
   programs.zsh = {
-    enable = true;
-    dotDir = "${config.xdg.configHome}/zsh";
-    history.path = "${config.xdg.dataHome}/zsh/zsh_history";
+    dotDir = lib.mkDefault "${config.xdg.configHome}/zsh";
+    history.path = lib.mkDefault "${config.xdg.dataHome}/zsh/zsh_history";
     oh-my-zsh = {
-      enable = true;
-      plugins = [
+      enable = lib.mkDefault true;
+      plugins = lib.mkDefault [
         "git"
         "direnv"
       ];
-      theme = "robbyrussell";
+      theme = lib.mkDefault "robbyrussell";
     };
-    shellAliases = {
+    shellAliases = lib.mkDefault {
       e = "$EDITOR";
       vi = "nvim";
       vim = "nvim";
