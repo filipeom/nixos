@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
 {
- home = {
+  home = {
     packages = with pkgs; [
       home-manager
     ];
@@ -15,10 +15,11 @@
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
     ../../modules/programs/neovim.nix
+    ./xdg.nix
   ];
 
   # XDG
-  xdg = import ./xdg.nix { inherit config pkgs lib; };
+  xdg.enable = true;
 
   # programs
   programs.git.enable = true;

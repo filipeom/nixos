@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
 {
- home = {
+  home = {
     packages = with pkgs; [
       # System config pkgs
       waybar
@@ -46,10 +46,11 @@
     # Services
     ../../modules/services/hyprsunset.nix
     ../../modules/services/hyprpaper.nix
+    ./xdg.nix
   ];
 
   # XDG
-  xdg = import ./xdg.nix { inherit config pkgs lib; };
+  xdg.enable = true;
 
   # programs
   programs.git.enable = true;

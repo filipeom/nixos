@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
 {
- home = {
+  home = {
     packages = with pkgs; [
       home-manager
       waybar
@@ -22,11 +22,12 @@
     # Services
     ../../modules/services/hyprsunset.nix
     ../../modules/services/hyprpaper.nix
+    ./xdg.nix
   ];
 
 
   # XDG
-  xdg = import ./xdg.nix { inherit config pkgs lib; };
+  xdg.enable = true;
 
   fonts.fontconfig = {
     enable = true;
