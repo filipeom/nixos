@@ -42,35 +42,17 @@
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
     ../../modules/programs/nvim.nix
+    ../../modules/programs/kitty.nix
+    # Services
+    ../../modules/services/hyprsunset.nix
+    ../../modules/services/hyprpaper.nix
   ];
 
   # XDG
   xdg = import ./xdg.nix { inherit config pkgs lib; };
 
   # programs
-  programs.kitty = {
-    enable = true;
-
-    settings = {
-      font_family = "JetBrainsMono Nerd Font";
-      bold_font = "auto";
-      italic_font = "auto";
-      bold_italic_font = "auto";
-
-      font_size = 14;
-      force_ltr = "no";
-      disable_ligatures = "never";
-
-      box_drawing_scale = "0.001, 1, 1.5, 2";
-      text_composition_strategy = "1.8 5";
-      text_fg_override_threshold = 0;
-    };
-
-    extraConfig = ''
-      include ${../../dotfiles/kitty/dayfox.conf}
-    '';
-  };
-
+  programs.kitty.enable = true;
   programs.waybar.enable = true;
 
   wayland.windowManager.hyprland = {
@@ -212,35 +194,8 @@
   };
 
   services.hypridle.enable = true;
-
-  services.hyprsunset = {
-    enable = true;
-    settings = {
-      max-gamma = 150;
-
-      profile = [
-      {
-        time = "7:30";
-        identity = true;
-      }
-      {
-        time = "20:00";
-        temperature = 4500;
-        gamma = 0.8;
-      }
-      ];
-    };
-  };
-
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      ipc = "on";
-      splash = false;
-      preload = [ "${../../dotfiles/wallpaper.jpg}" ];
-      wallpaper = [ ",${../../dotfiles/wallpaper.jpg}" ];
-    };
-  };
+  services.hyprsunset.enable = true;
+  services.hyprpaper.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";

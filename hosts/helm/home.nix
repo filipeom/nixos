@@ -19,6 +19,9 @@
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
     ../../modules/programs/nvim.nix
+    # Services
+    ../../modules/services/hyprsunset.nix
+    ../../modules/services/hyprpaper.nix
   ];
 
 
@@ -75,41 +78,11 @@
     pinentry.program = "pinentry-qt";
   };
 
-  services.ssh-agent = {
-    enable = true;
-    defaultMaximumIdentityLifetime = 1800;
-  };
+  services.ssh-agent.enable = true;
 
   services.hypridle.enable = true;
-
-  services.hyprsunset = {
-    enable = true;
-    settings = {
-      max-gamma = 150;
-
-      profile = [
-        {
-          time = "7:30";
-          identity = true;
-        }
-        {
-          time = "20:00";
-          temperature = 4500;
-          gamma = 0.8;
-        }
-      ];
-    };
-  };
-
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      ipc = "on";
-      splash = false;
-      preload = [ "${../../dotfiles/wallpaper.jpg}" ];
-      wallpaper = [ ",${../../dotfiles/wallpaper.jpg}" ];
-    };
-  };
+  services.hyprsunset.enable = true;
+  services.hyprpaper.enable = true;
 
   home.sessionPath = [
     "$HOME/.local/bin"
