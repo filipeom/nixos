@@ -31,7 +31,7 @@
       };
 
       nixosConfigurations = {
-	vessel-01 = nixpkgs.lib.nixosSystem {
+	      vessel-01 = nixpkgs.lib.nixosSystem {
           inherit system;
           inherit pkgs;
           modules = [
