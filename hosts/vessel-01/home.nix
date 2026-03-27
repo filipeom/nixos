@@ -72,6 +72,7 @@
 
       exec-once = [
         "nextcloud"
+        "systemctl --user start hypridle hyprsunset hyprpaper"
       ];
 
       general = {
