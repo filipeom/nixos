@@ -34,10 +34,7 @@
   programs.neovim.enable = true;
 
   # serices
-  services.ssh-agent = {
-    enable = true;
-    defaultMaximumIdentityLifetime = 1800;
-  };
+  services.ssh-agent.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";
