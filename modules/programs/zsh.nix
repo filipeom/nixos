@@ -4,12 +4,12 @@
     dotDir = "${config.xdg.configHome}/zsh";
     history.path = "${config.xdg.dataHome}/zsh/zsh_history";
     oh-my-zsh = {
-      enable = lib.mkDefault true;
-      plugins = lib.mkDefault [
+      enable = true;
+      plugins = [
         "git"
         "direnv"
       ];
-      theme = lib.mkDefault "robbyrussell";
+      theme = "robbyrussell";
     };
     shellAliases = {
       e = "$EDITOR";
