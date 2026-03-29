@@ -63,7 +63,7 @@
     enable = true;
     package = pkgs.hyprland;
     settings = {
-      monitor = ",preferred,auto,auto";
+      monitor = ",highres@highrr,0x0,auto";
 
       "$mod" = "SUPER";
       "$terminal" = "kitty";
