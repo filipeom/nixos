@@ -56,7 +56,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Disable networking (static ip above)
-  networking.networkmanager.enable = true;
+  networking.networkmanager.enable = false;
 
   virtualisation.podman = {
     enable = true;
