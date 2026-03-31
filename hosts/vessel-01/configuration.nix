@@ -31,6 +31,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+  ];
+  boot.kernelModules = [ "v4l2loopback" ];
+  boot.extraModprobeConfig = ''
+    options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+  '';
+  security.polkit.enable = true;
+
   networking.hostName = "vessel-01"; # Define your hostname.
   networking.useDHCP = false;
   networking.interfaces.eno1 = {
@@ -171,6 +180,13 @@
     xwayland.enable = true;
   };
 
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    glib
+  ];
+
   # List services that you want to enable:
 
   # Enable display manager
@@ -220,18 +236,13 @@
   # Enable Bluetooth daemon
   services.blueman.enable = true;
 
+  services.flatpak.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc.lib
-    zlib
-    glib
-  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
