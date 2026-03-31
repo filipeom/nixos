@@ -15,7 +15,6 @@
       thunderbird
       slack
       zulip
-      mattermost-desktop
       google-chrome
 
       # Development
@@ -23,6 +22,7 @@
       direnv
       docker-compose
       basedpyright
+      opam
 
       # Misc
       home-manager
@@ -54,7 +54,16 @@
 
   # programs
   programs.git.enable = true;
-  programs.zsh.enable = true;
+
+  programs.zsh = {
+    enable = true;
+    initContent = ''
+      eval $(opam env)
+
+      tmpd() { cd $(mktemp -d) }
+      '';
+  };
+
   programs.neovim.enable = true;
   programs.kitty.enable = true;
   programs.waybar.enable = true;
@@ -72,7 +81,7 @@
 
       exec-once = [
         "nextcloud"
-        "systemctl --user start hypridle hyprsunset hyprpaper"
+        "systemctl --user start hypridle hyprsunset hyprpaper mako"
       ];
 
       general = {
@@ -107,6 +116,7 @@
       misc = {
         force_default_wallpaper = 1;
         disable_hyprland_logo = true;
+        allow_session_lock_restore = true;
       };
 
       input = {
@@ -198,6 +208,16 @@
   services.hypridle.enable = true;
   services.hyprsunset.enable = true;
   services.hyprpaper.enable = true;
+
+  services.mako = {
+    enable = true;
+    settings = {
+      default-timeout = 5000; # Time in milliseconds
+      border-radius = 5;
+      background-color = "#282a36ee";
+      border-color = "#bd93f9";
+    };
+  };
 
   home.sessionVariables = {
     EDITOR = "nvim";
