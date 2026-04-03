@@ -22,6 +22,7 @@
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
     ../../modules/programs/neovim.nix
+    ../../modules/programs/tmux-sessionizer.nix
     ./xdg.nix
   ];
 
@@ -30,8 +31,20 @@
 
   # programs
   programs.git.enable = true;
-  programs.zsh.enable = true;
+
+  programs.zsh = {
+    enable = true;
+    initContent = ''
+      bindkey -s ^f "tmux-sessionizer\n"
+      '';
+  };
+
   programs.neovim.enable = true;
+
+  programs.tmux-sessionizer = {
+    enable = true;
+    searchDirs = [ "~/" ];
+  };
 
   # serices
   services.ssh-agent.enable = true;
