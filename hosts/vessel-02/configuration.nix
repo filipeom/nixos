@@ -21,7 +21,7 @@
 
   networking.hostName = "vessel-02"; # Define your hostname.
   networking.useDHCP = false;
-  networking.interfaces.enp3s0 = {
+  networking.interfaces.enp2s0 = {
     ipv4.addresses = [{
       address = "192.168.1.111";
       prefixLength = 24;
