@@ -43,6 +43,7 @@
     ../../modules/programs/zsh.nix
     ../../modules/programs/neovim.nix
     ../../modules/programs/kitty.nix
+    ../../modules/programs/tmux-sessionizer.nix
     # Services
     ../../modules/services/hyprsunset.nix
     ../../modules/services/hyprpaper.nix
@@ -58,6 +59,8 @@
   programs.zsh = {
     enable = true;
     initContent = ''
+      bindkey -s ^f "tmux-sessionizer\n"
+
       eval $(opam env)
 
       tmpd() { cd $(mktemp -d) }
@@ -66,6 +69,15 @@
 
   programs.neovim.enable = true;
   programs.kitty.enable = true;
+
+  programs.tmux-sessionizer = {
+    enable = true;
+    searchDirs = [
+      "~/projects"
+      "~/documents/resources/notes"
+    ];
+  };
+
   programs.waybar.enable = true;
 
   wayland.windowManager.hyprland = {
