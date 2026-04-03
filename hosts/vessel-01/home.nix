@@ -23,6 +23,7 @@
       docker-compose
       basedpyright
       opam
+      clang
 
       # Misc
       home-manager
