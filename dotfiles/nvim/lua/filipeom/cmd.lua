@@ -1,15 +1,35 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+-- Restore cursor position on entering a buffer
+autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype == "gitcommit" then return end
+    local line = vim.fn.line("'\"")
+    if line > 1 and line <= vim.fn.line("$") then
+      vim.cmd("normal! g'\"")
+    end
+  end,
+})
+
 -- On entering a buffer restore last view
 autocmd("BufWinEnter", {
-  pattern = { "*.md" },
-  command = 'loadview',
+  pattern = "*",
+  callback = function()
+    if vim.bo.buftype == "" and vim.bo.filetype ~= "gitcommit" then
+      vim.cmd("silent! loadview")
+    end
+  end,
 })
 
 -- On leaving create the view
 autocmd("BufWinLeave", {
-  pattern = { "*.md" },
-  command = 'mkview',
+  pattern = "*",
+  callback = function()
+    if vim.bo.buftype == "" and vim.bo.filetype ~= "gitcommit" then
+      vim.cmd("silent! mkview")
+    end
+  end,
 })
 
 -- Remove whitespace before saving file
