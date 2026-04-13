@@ -31,6 +31,12 @@
       btop
       keepassxc
       nextcloud-client
+
+      # Office stuff
+      libreoffice-fresh
+      hunspell
+      hunspellDicts.en_US
+      hunspellDicts.pt_PT
     ];
 
     username = "filipe";
