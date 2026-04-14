@@ -19,6 +19,7 @@
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
     ../../modules/programs/neovim.nix
+    ../../modules/programs/tmux-sessionizer.nix
     # Services
     ../../modules/services/hyprsunset.nix
     ../../modules/services/hyprpaper.nix
@@ -55,6 +56,14 @@
 
       tmpd() { cd $(mktemp -d) }
       '';
+  };
+
+  programs.tmux-sessionizer = {
+    enable = true;
+    searchDirs = [
+      "~/projects"
+      "~/documents/resources/notes"
+    ];
   };
 
   programs.neovim.enable = true;
