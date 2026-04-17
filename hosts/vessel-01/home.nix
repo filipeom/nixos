@@ -22,8 +22,12 @@
       direnv
       docker-compose
       basedpyright
+      marksman
+      texlab
+      vtsls
       opam
       clang
+      jq
 
       # Misc
       home-manager

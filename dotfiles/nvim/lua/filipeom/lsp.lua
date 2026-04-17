@@ -6,7 +6,8 @@ vim.lsp.enable({
   'rust_analyzer',
   'texlab',
   'tinymist',
-  'marksman'
+  'marksman',
+  'vtsls'
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
