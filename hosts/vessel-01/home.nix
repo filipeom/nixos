@@ -41,6 +41,8 @@
       hunspell
       hunspellDicts.en_US
       hunspellDicts.pt_PT
+      texliveFull
+      zathura
     ];
 
     username = "filipe";
