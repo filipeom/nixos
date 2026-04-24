@@ -10,6 +10,7 @@
       ".files"
       ".direnv/"
       ".envrc"
+      "_opam/"
     ];
   };
 }
