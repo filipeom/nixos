@@ -28,6 +28,7 @@
       opam
       clang
       jq
+      gh
 
       # Misc
       home-manager
