@@ -1,5 +1,5 @@
 {
-  description = "My home manaer config";
+  description = "My NixOS Config";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";

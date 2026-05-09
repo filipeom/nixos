@@ -10,8 +10,9 @@
       ./hardware-configuration.nix
     ];
 
-  hardware.bluetooth.enable = true;
 
+  hardware.i2c.enable = true;
+  hardware.bluetooth.enable = true;
   hardware.graphics.enable = true;
 
   hardware.nvidia = {
@@ -58,6 +59,7 @@
 
   networking.extraHosts = ''
     192.168.1.124   cloud.filipeom.dev
+    192.168.1.124   plex.filipeom.dev
   '';
 
   # Configure network proxy if necessary
@@ -112,7 +114,7 @@
   users.users.filipe = {
     isNormalUser = true;
     description = "filipe";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "i2c" ];
     shell = pkgs.zsh;
     packages = with pkgs; [];
     openssh.authorizedKeys.keys = [
@@ -139,8 +141,13 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
+    bzip2
+    btop
+    bluez
+    cloudflare-warp
     curl
+    ddcutil
+    wget
     neovim
     git
     gnutar
@@ -150,8 +157,6 @@
     gcc
     gnumake
     gawk
-    bzip2
-    btop
     nodejs_24
     python314
     rustup
@@ -161,8 +166,6 @@
     pavucontrol
     playerctl
     pulseaudio
-    bluez
-    cloudflare-warp
     libnotify
   ];
 
