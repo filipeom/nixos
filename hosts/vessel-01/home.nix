@@ -34,6 +34,7 @@
       home-manager
       tmux
       btop
+      htop
       keepassxc
       nextcloud-client
 
