@@ -236,14 +236,14 @@
     enable = true;
     settings = {
       general = {
-        lock_cmd = "hyprlock";
-        before_sleep_cmd = "loginctl lock-session";
+        # lock_cmd = "hyprlock";
+        # before_sleep_cmd = "loginctl lock-session";
       };
       listener = [
-        {
-          timeout = 300;
-          on-timeout = "loginctl lock-session";
-        }
+        # {
+        #   timeout = 300;
+        #   on-timeout = "loginctl lock-session";
+        # }
         {
           timeout = 900;
           on-timeout="systemctl suspend";
