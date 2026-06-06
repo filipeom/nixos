@@ -165,7 +165,7 @@
     #   "github-runner-work/vessel-runner"
     # ];
     # workDir = "/var/lib/github-runner-work/vessel-runner";
-    nodeRuntimes = [ "node20" "node24" ];
+    nodeRuntimes = [ "node24" ];
     extraLabels = [ "self-hosted-nix" ];
     extraPackages = with pkgs; [
       docker
