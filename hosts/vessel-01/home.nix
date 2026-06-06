@@ -97,6 +97,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "hyprlang";
     package = pkgs.hyprland;
     settings = {
       monitor = ",highres@highrr,0x0,auto";
