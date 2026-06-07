@@ -36,4 +36,4 @@ vim.opt.colorcolumn = "81"
 
 vim.opt.foldlevel = 99
 
-vim.g.mapleader = ","
+vim.g.mapleader = " "

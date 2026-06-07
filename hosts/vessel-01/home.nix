@@ -148,10 +148,10 @@
       };
 
       input = {
-        kb_layout = "pt";
+        kb_layout = "us";
         kb_variant = "";
         kb_model = "";
-        kb_options = "";
+        kb_options = "ctrl:nocaps";
         kb_rules = "";
 
         follow_mouse = 1;
@@ -171,11 +171,23 @@
         "$mod SHIFT, F, fullscreen,"
         "$mod, X, exec, hyprlock"
 
-        # Move focus with mainMod + arrow keys
-        "$mod, h, resizeactive, -50 0"
-        "$mod, l, resizeactive, 50 0"
-        "$mod, j, cyclenext, prev"
-        "$mod, k, cyclenext,"
+        # Move focus with mainMod + hjkl
+        "$mod, h, movefocus, l"
+        "$mod, l, movefocus, r"
+        "$mod, j, movefocus, d"
+        "$mod, k, movefocus, u"
+
+        # Move window with mainMod + SHIFT + hjkl
+        "$mod SHIFT, h, movewindow, l"
+        "$mod SHIFT, l, movewindow, r"
+        "$mod SHIFT, j, movewindow, d"
+        "$mod SHIFT, k, movewindow, u"
+
+        # Resize with mainMod + ALT + hjkl
+        "ALT $mod, h, resizeactive, -40 0"
+        "ALT $mod, l, resizeactive, 40 0"
+        "ALT $mod, j, resizeactive, 0 40"
+        "ALT $mod, k, resizeactive, 0 -40"
 
         "$mode, comma, focusmonitor, +1"
         "$mode, period, focusmonitor, -1"
