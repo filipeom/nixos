@@ -62,7 +62,7 @@
       # ecmasl-vim
     ];
 
-    extraLuaConfig = ''
+    initLua = ''
       require('filipeom')
     '';
   };
