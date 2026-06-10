@@ -45,6 +45,7 @@
       hunspellDicts.pt_PT
       texliveFull
       zathura
+      zotero
     ];
 
     username = "filipe";
