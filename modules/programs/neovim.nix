@@ -1,30 +1,30 @@
 { pkgs, ... }:
 
-# let
-#   ecmasl-src = pkgs.fetchFromGitHub {
-#     owner = "formalsec";
-#     repo = "ecmasl-vim";
-#     rev = "main";
-#     sha256 = "sha256-TsrlYPry3T+ym1l7757vyLVJfEPLVAOyrTpM6pNzvXw=";
-#   };
+let
+  ecmasl-src = pkgs.fetchFromGitHub {
+    owner = "formalsec";
+    repo = "ecmasl-vim";
+    rev = "main";
+    sha256 = "sha256-8rNvrf/zJ47L0EYvYCnbzj+CWh+gkLSbDFk9M0/Op6c=";
+  };
 
-#   tree-sitter-ecmasl = pkgs.tree-sitter.buildGrammar {
-#     language = "ecmasl";
-#     version = "unstable";
-#     src = ecmasl-src;
-#     location = "tree-sitter-ecmasl";
-#   };
+  tree-sitter-ecmasl = pkgs.tree-sitter.buildGrammar {
+    language = "ecmasl";
+    version = "unstable";
+    src = ecmasl-src;
+    location = "tree-sitter-ecmasl";
+  };
 
-#   ecmasl-vim = pkgs.vimUtils.buildVimPlugin {
-#     pname = "ecmasl-vim";
-#     version = "unstable";
-#     src = ecmasl-src;
-#   };
+  ecmasl-vim = pkgs.vimUtils.buildVimPlugin {
+    pname = "ecmasl-vim";
+    version = "unstable";
+    src = ecmasl-src;
+  };
 
-#   treesitter-with-ecmasl = pkgs.vimPlugins.nvim-treesitter.withPlugins (p:
-#     pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ tree-sitter-ecmasl ]
-#   );
-# in
+  treesitter-with-ecmasl = pkgs.vimPlugins.nvim-treesitter.withPlugins (p:
+    pkgs.vimPlugins.nvim-treesitter.allGrammars ++ [ tree-sitter-ecmasl ]
+  );
+in
 {
   programs.neovim = {
     defaultEditor = true;
@@ -55,11 +55,9 @@
       vim-vsnip
 
       # Treesitter
-      # treesitter-with-ecmasl
-      nvim-treesitter.withAllGrammars
-       # playground
-
-      # ecmasl-vim
+      treesitter-with-ecmasl
+      # nvim-treesitter.withAllGrammars
+      ecmasl-vim
     ];
 
     initLua = ''
