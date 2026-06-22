@@ -241,6 +241,12 @@
 
   services.flatpak.enable = true;
 
+  # Configure Ollama for CUDA
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-cuda;
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

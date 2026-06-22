@@ -29,6 +29,7 @@
       clang
       jq
       gh
+      opencode
 
       # Misc
       home-manager
