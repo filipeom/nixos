@@ -183,9 +183,42 @@
     };
   };
 
+  services.minecraft-server = {
+    enable = true;
+    eula = true;
+    package = pkgs.callPackage (pkgs.path + "/pkgs/by-name/mi/minecraft-server/derivation.nix") {
+      version = "26.2";
+      url = "https://piston-data.mojang.com/v1/objects/823e2250d24b3ddac457a60c92a6a941943fcd6a/server.jar";
+      sha1 = "823e2250d24b3ddac457a60c92a6a941943fcd6a";
+      jre_headless = pkgs.javaPackages.compiler.openjdk25.headless;
+    };
+    openFirewall = true; # Opens the port the server is running on (by default 25565 but in this case 43000)
+    declarative = true;
+    # whitelist = {
+    #   # This is a mapping of Minecraft usernames to to the players' UUIDs
+    #   username1 = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+    #   username2 = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy";
+    # };
+    serverProperties = {
+      server-port = 25565;
+      # peaceful, easy, normal, hard
+      difficulty = "normal";
+      # 0 - survival, 1 - creative, 2 - adventure, 3 - spectator
+      gamemode = "survival";
+      max-players = 20;
+      motd = "The server is fine, it's your internet.";
+      white-list = true;
+      allow-cheats = true;
+    };
+    # jvmOpts = "-Xms2048M -Xmx2048M";
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 25565 ];
+  networking.firewall.allowedUDPPorts = [ 25565 ];
+
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
