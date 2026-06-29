@@ -16,6 +16,8 @@
       slack
       zulip
       google-chrome
+      prismlauncher
+      deltachat-desktop
 
       # Development
       git
