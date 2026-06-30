@@ -16,8 +16,13 @@
       slack
       zulip
       google-chrome
-      prismlauncher
       deltachat-desktop
+      (prismlauncher.override {
+        jdks = [
+          pkgs.temurin-bin-21
+          pkgs.temurin-bin-17
+        ];
+      })
 
       # Development
       git
