@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../../modules/services/minecraft-atm10.nix
+      ../../modules/services/minecraft-bmc4.nix
     ];
 
   boot.runSize = "50%";
@@ -185,12 +186,17 @@
   };
 
   # ---- Minecraft: All the Mods 10 (NeoForge 1.21.1) ----
+  # Disabled for now
   services.minecraft-atm10 = {
-    enable = true;
+    enable = false;
     server-port = 25565;
     openFirewall = true;
     jvmOpts = "-Xms10G -Xmx12G -XX:+UseZGC -XX:+ZGenerational -XX:+AlwaysPreTouch";
   };
+
+  # ---- Minecraft: Better MC [FORGE] BMC4 (Forge 1.20.1) ----
+  # Disabled for now
+  services.minecraft-bmc4.enable = true;
 
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
