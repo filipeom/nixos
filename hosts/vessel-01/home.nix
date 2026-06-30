@@ -157,10 +157,10 @@
       };
 
       input = {
-        kb_layout = "us";
-        kb_variant = "";
+        kb_layout = "us,us";
+        kb_variant = ",intl";
         kb_model = "";
-        kb_options = "ctrl:nocaps";
+        kb_options = "grp:alt_shift_toggle,ctrl:nocaps";
         kb_rules = "";
 
         follow_mouse = 1;
