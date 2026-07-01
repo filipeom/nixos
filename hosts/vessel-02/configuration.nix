@@ -56,6 +56,9 @@
     containers = {
       # Mount the /nix store as read-only natively via the container engine
       volumes = [ "/nix:/nix:ro" ];
+      # Default resource limits for all containers
+      cpus = 4;         # limit to 4 CPU threads (i7-3770 has 8)
+      memory = "8g";    # limit to 8 GiB of RAM
     };
   };
 
