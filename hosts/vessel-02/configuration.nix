@@ -52,6 +52,8 @@
     dockerSocket.enable = true;
   };
 
+  systemd.services."user@".serviceConfig.Delegate = "yes";
+
   virtualisation.containers.containersConf.settings = {
     containers = {
       # Mount the /nix store as read-only natively via the container engine
