@@ -52,15 +52,16 @@
     dockerSocket.enable = true;
   };
 
-  systemd.services."user@".serviceConfig.Delegate = "yes";
+  # Restrict the parent slice where systemd places all rootful containers
+  systemd.slices."machine".sliceConfig = {
+    AllowedCPUs = "0-3";
+    MemoryMax = "8G";
+  };
 
   virtualisation.containers.containersConf.settings = {
     containers = {
       # Mount the /nix store as read-only natively via the container engine
       volumes = [ "/nix:/nix:ro" ];
-      # Default resource limits for all containers
-      cpus = 4;         # limit to 4 CPU threads (i7-3770 has 8)
-      memory = "8g";    # limit to 8 GiB of RAM
     };
   };
 
