@@ -16,14 +16,16 @@
   boot.kernelModules = [ "nct6775" ];
   # Bootloader.
   boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.efi.canTouchEfiVariables = false;
 
   powerManagement.powertop.enable = true;
 
   networking.hostName = "vessel-02"; # Define your hostname.
   networking.useDHCP = false;
-  networking.interfaces.enp2s0 = {
+  networking.interfaces.enp1s0 = {
     ipv4.addresses = [{
       address = "192.168.1.111";
       prefixLength = 24;
@@ -55,7 +57,7 @@
   # Restrict the parent slice where systemd places all rootful containers
   systemd.slices."machine".sliceConfig = {
     AllowedCPUs = "0-3";
-    MemoryMax = "8G";
+    MemoryMax = "16G";
   };
 
   virtualisation.containers.containersConf.settings = {
