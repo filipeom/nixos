@@ -33,6 +33,18 @@ in
     withRuby = true;
     withPython3 = true;
 
+    extraPackages = with pkgs; [
+      # Utilities
+      ripgrep
+
+      # LSP Servers
+      texlab
+      vtsls
+      basedpyright
+      clang-tools
+      marksman
+    ];
+
     plugins = with pkgs.vimPlugins; [
       # UI
       nightfox-nvim
