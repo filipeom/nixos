@@ -8,8 +8,6 @@
       btop
       direnv
       docker-compose
-      # lsp
-      basedpyright
     ];
 
     username = "filipe";

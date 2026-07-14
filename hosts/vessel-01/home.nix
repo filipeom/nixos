@@ -28,10 +28,6 @@
       git
       direnv
       docker-compose
-      basedpyright
-      marksman
-      texlab
-      vtsls
       opam
       clang
       jq
