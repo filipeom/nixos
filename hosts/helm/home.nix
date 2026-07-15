@@ -66,8 +66,11 @@
     enable = true;
     signing = {
       format = "ssh";
-      key = "~/.ssh/id_helm.pub";
+      key = "${config.home.homeDirectory}/.ssh/id_helm.pub";
       signByDefault = true;
+    };
+    extraConfig = {
+      gpg.ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
     };
   };
 
