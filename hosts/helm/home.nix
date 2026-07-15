@@ -61,8 +61,15 @@
 
   xdg.enable = true;
 
-  # programs
-  programs.git.enable = true;
+# programs
+  programs.git = {
+    enable = true;
+    signing = {
+      format = "ssh";
+      key = "~/.ssh/id_helm.pub";
+      signByDefault = true;
+    };
+  };
 
   programs.zsh = {
     enable = true;
