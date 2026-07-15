@@ -26,10 +26,6 @@
       };
     in {
       homeConfigurations = {
-        helm = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ hosts/helm/home.nix ];
-        };
         anchor-01 = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ hosts/anchor-01/home.nix ];
@@ -37,7 +33,20 @@
       };
 
       nixosConfigurations = {
-	      vessel-01 = nixpkgs.lib.nixosSystem {
+        helm = nixpkgs.lib.nixosSystem {
+          inherit system;
+          inherit pkgs;
+          modules = [
+            ./hosts/helm/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.filipe = import ./hosts/helm/home.nix;
+              }
+          ];
+        };
+        vessel-01 = nixpkgs.lib.nixosSystem {
           inherit system;
           inherit pkgs;
           modules = [

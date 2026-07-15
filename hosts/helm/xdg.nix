@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   xdg = {
     configHome = "${config.home.homeDirectory}/.config";
@@ -8,6 +8,7 @@
 
     userDirs = {
       enable = true;
+      setSessionVariables = true;
 
       desktop = "${config.home.homeDirectory}/desktop";
       documents = "${config.home.homeDirectory}/documents";
@@ -25,13 +26,13 @@
     # Some config files we need
     configFile = {
       "tmux/tmux.conf".source = ../../dotfiles/tmux/tmux.conf;
-      "kitty/kitty.conf".source = ../../dotfiles/kitty/kitty.conf;
-      "kitty/dayfox.conf".source = ../../dotfiles/kitty/dayfox.conf;
-      "zathura/zathurarc".source = ../../dotfiles/zathura/zathura.conf;
       "waybar".source = ../../dotfiles/waybar;
-      "hypr/hyprland.conf".source = ../../dotfiles/hypr/hyprland.conf;
-      "hypr/hypridle.conf".source = ../../dotfiles/hypr/hypridle.conf;
-      "hypr/hyprlock.conf".source = ../../dotfiles/hypr/hyprlock.conf;
+    };
+
+    # Enable screensharing
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
     };
 
     mimeApps.defaultApplications = {

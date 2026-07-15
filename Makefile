@@ -1,7 +1,7 @@
 .PHONY: update clean
 
 update:
-	home-manager switch --flake .#helm
+	sudo nixos-rebuild switch --flake .#helm
 
 clean:
 	nix-collect-garbage -d

@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        host: [vessel-01, vessel-02]
+        host: [helm, vessel-01, vessel-02]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        host: [helm, anchor-01]
+        host: [anchor-01]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
