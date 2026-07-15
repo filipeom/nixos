@@ -1,9 +1,15 @@
 HOSTNAME=$(shell hostname)
 
-.PHONY: update
-update:
+default: update
+
+.PHONY: rebuild
+rebuild:
 	@echo "Updating $(HOSTNAME)..."
 	sudo nixos-rebuild switch --flake .#$(HOSTNAME)
+
+.PHONY: update
+update:
+	nix flake update
 
 .PHONY: clean
 clean:
