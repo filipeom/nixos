@@ -103,13 +103,19 @@
     gzip
     zip
     unzip
+    gcc
     gnumake
     gawk
+    nodejs_24
+    python314
+    rustup
     neovim
     wget
     curl
     pavucontrol
     pulseaudio
+    inetutils
+    dnsutils
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
