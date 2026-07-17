@@ -94,7 +94,7 @@
     enable = true;
     searchDirs = [
       "~/projects"
-      # "~/documents/resources/notes"
+      "~/documents/resources/notes"
     ];
   };
 
