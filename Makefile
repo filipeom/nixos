@@ -27,27 +27,16 @@ deploy-vessel-02:
 	nixos-rebuild boot --flake .#vessel-02 \
 		--target-host $(V02) --build-host $(V02) --sudo
 
+.PHONY: reboot-vessel-01
+reboot-vessel-01:
+	./scripts/reboot-host.sh $(V01)
+
 .PHONY: reboot-vessel-02
 reboot-vessel-02:
-	@PENDING=$$(ssh $(V02) "readlink -f /nix/var/nix/profiles/system"); \
-	echo "Pending generation: $$PENDING"; \
-	echo "Rebooting vessel-02..."; \
-	ssh $(V02) "sudo systemctl reboot" 2>/dev/null || true; \
-	echo "Waiting for vessel-02 to come back..."; \
-	sleep 10; \
-	for i in $$(seq 1 30); do \
-		ssh -o ConnectTimeout=5 $(V02) "echo ok" 2>/dev/null && break; \
-		echo "  waiting... ($$i/30)"; sleep 5; \
-	done; \
-	echo "vessel-02 is back!"; \
-	ACTIVE=$$(ssh $(V02) "readlink /run/current-system"); \
-	if [ "$$PENDING" = "$$ACTIVE" ]; then \
-		echo "✓ Boot successful: $$ACTIVE"; \
-	else \
-		echo "⚠  Booted into unexpected generation"; \
-		echo "  Expected: $$PENDING"; \
-		echo "  Active:   $$ACTIVE"; \
-	fi
+	./scripts/reboot-host.sh $(V02)
+
+.PHONY: deploy-vessel-01-reboot
+deploy-vessel-01-reboot: deploy-vessel-01 reboot-vessel-01
 
 .PHONY: deploy-vessel-02-reboot
 deploy-vessel-02-reboot: deploy-vessel-02 reboot-vessel-02

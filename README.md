@@ -29,26 +29,32 @@ dotfiles/
 ## Makefile
 
 ```sh
-make              # nix flake update
+make                         # nix flake update
+make rebuild                 # local nixos-rebuild switch
+make build                   # nix build (verify without deploying)
 
-make rebuild      # local nixos-rebuild switch
-make build        # nix build (verify without deploying)
+# remote deploy
+make deploy-vessel-01        # deploy → vessel-01 (switch)
+make deploy-vessel-02        # deploy → vessel-02 (boot)
+make deploy-vessel-01-reboot # deploy → vessel-01 (switch + reboot + verify)
+make deploy-vessel-02-reboot # deploy → vessel-02 (boot + reboot + verify)
+make deploy-all              # deploy → both remotes
 
-make deploy-vessel-01         # deploy → vessel-01 (switch)
-make deploy-vessel-02         # deploy → vessel-02 (boot)
-make deploy-vessel-02-reboot  # deploy → vessel-02 (boot + reboot + verify)
-make deploy-all               # deploy → both remotes
+# reboot only
+make reboot-vessel-01        # reboot vessel-01 and verify boot generation
+make reboot-vessel-02        # reboot vessel-02 and verify boot generation
 
-make reboot-vessel-02  # reboot vessel-02 and verify boot generation
-
-make clean        # nix-collect-garbage -d
+make clean                   # nix-collect-garbage -d
 ```
 
 `deploy-vessel-02` uses `boot` (not `switch`) — the new config is set as the
 next boot entry but doesn't replace the running system. Reboot to activate.
 
-Use `deploy-vessel-02-reboot` to deploy, reboot, wait for the server to come
-back, and verify the new generation is active — all in one step.
+The `*-reboot` targets deploy, reboot, wait for the host to come back, and
+verify the new generation is active — all in one step.
+
+`scripts/reboot-host.sh <ssh-host>` is the underlying reboot+verify script,
+callable directly for any host.
 
 ## Links
 
