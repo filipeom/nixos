@@ -32,7 +32,6 @@
       clang
       jq
       gh
-      opencode
 
       tmux
       btop
@@ -96,6 +95,13 @@
       "~/projects"
       "~/documents/resources/notes"
     ];
+  };
+
+  programs.opencode = {
+    enable = true;
+    settings = {
+      autoupdate = false;
+    };
   };
 
   wayland.windowManager.hyprland = {

@@ -44,6 +44,13 @@
     searchDirs = [ "~/" ];
   };
 
+  programs.opencode = {
+    enable = true;
+    settings = {
+      autoupdate = false;
+    };
+  };
+
   # serices
   services.ssh-agent.enable = true;
 
