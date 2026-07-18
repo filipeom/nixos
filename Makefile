@@ -24,7 +24,7 @@ deploy-vessel-01:
 .PHONY: deploy-vessel-02
 deploy-vessel-02:
 	@echo "Deploying to vessel-02 (boot)..."
-	nixos-rebuild boot --flake .#vessel-02 \
+	nixos-rebuild switch --flake .#vessel-02 \
 		--target-host $(V02) --build-host $(V02) --sudo
 
 .PHONY: reboot-vessel-01

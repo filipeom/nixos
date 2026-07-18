@@ -68,7 +68,7 @@
       key = "${config.home.homeDirectory}/.ssh/id_helm.pub";
       signByDefault = true;
     };
-    extraConfig = {
+    settings = {
       gpg.ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
     };
   };
