@@ -44,6 +44,7 @@
   networking.hostName = "vessel-01"; # Define your hostname.
   networking.useDHCP = false;
   networking.interfaces.eno1 = {
+    wakeOnLan.enable = true;
     ipv4.addresses = [{
       address = "192.168.1.110";
       prefixLength = 24;

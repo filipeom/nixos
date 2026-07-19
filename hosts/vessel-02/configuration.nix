@@ -21,11 +21,10 @@
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.efi.canTouchEfiVariables = false;
 
-  powerManagement.powertop.enable = true;
-
   networking.hostName = "vessel-02"; # Define your hostname.
   networking.useDHCP = false;
   networking.interfaces.enp1s0 = {
+    wakeOnLan.enable = true;
     ipv4.addresses = [{
       address = "192.168.1.111";
       prefixLength = 24;
