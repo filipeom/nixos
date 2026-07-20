@@ -38,6 +38,15 @@
       htop
       keepassxc
       nextcloud-client
+
+      # Office stuff
+      libreoffice-fresh
+      hunspell
+      hunspellDicts.en_US
+      hunspellDicts.pt_PT
+      texliveFull
+      zathura
+      zotero
     ];
 
     username = "filipe";
