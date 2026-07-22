@@ -166,8 +166,8 @@
       };
 
       input = {
-        kb_layout = "us,us";
-        kb_variant = ",intl";
+        kb_layout = "us,pt";
+        kb_variant = ",";
         kb_model = "";
         kb_options = "grp:alt_shift_toggle,ctrl:nocaps";
         kb_rules = "";
