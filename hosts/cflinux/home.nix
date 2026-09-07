@@ -68,7 +68,7 @@
       exec ${pkgs.nodejs_26}/bin/npx -y opencode-ai@latest "$@"
     '';
     settings = {
-      model = "google/gemini-3.7-flash";
+      model = "google/gemini-3.8-flash";
       autoupdate = false;
       permission = "allow";
       lsp = true;
@@ -78,6 +78,7 @@
   programs.home-manager.enable = true;
 
   home.sessionPath = [
+    "$HOME/.local/bin"
     "$HOME/.cargo/bin"
     "$HOME/.nix-profile/bin"
     "$HOME/go/bin"
