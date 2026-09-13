@@ -49,9 +49,13 @@
   networking.firewall.allowedUDPPorts = [ 51820 ];
   boot.kernel.sysctl = { "net.ipv4.ip_forward" = 1; };
 
-  networking.nat.enable = true;
-  networking.nat.externalInterface = "enp1s0";
-  networking.nat.internalInterfaces = [ "wg0" ];
+  networking.nat = {
+    enable = true;
+    enableIPv6 = false;
+    externalInterface = "enp1s0";
+    internalInterfaces = [ "wg0" ];
+  };
+
   networking.wireguard.interfaces.wg0 = {
     ips = [ "10.100.0.1/24" ];
     listenPort = 51820;
@@ -62,6 +66,11 @@
         # Windows Client
         publicKey = "l6Oc7idr8xYutd5q8uCMgqFFqjS21vq2NctNDy3vMCE=";
         allowedIPs = [ "10.100.0.2/32" ];
+      }
+      {
+        # helm
+        publicKey = "tcywDJh5ZzpsEq4tdfA7D3B+bEEfmHZ6NORf7Gf7eyA=";
+        allowedIPs = [ "10.100.0.10/32" ];
       }
     ];
   };
