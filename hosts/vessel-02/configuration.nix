@@ -47,7 +47,10 @@
 
   # WireGuard VPN server configuration
   networking.firewall.allowedUDPPorts = [ 51820 ];
-  boot.kernel.sysctl = { "net.ipv4.ip_forward" = 1; };
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.enp1s0.accept_ra" = 2;
+  };
 
   networking.nat = {
     enable = true;
