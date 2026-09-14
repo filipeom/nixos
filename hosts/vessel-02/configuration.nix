@@ -51,26 +51,25 @@
 
   networking.nat = {
     enable = true;
-    enableIPv6 = false;
+    enableIPv6 = true;
     externalInterface = "enp1s0";
     internalInterfaces = [ "wg0" ];
   };
 
   networking.wireguard.interfaces.wg0 = {
-    ips = [ "10.100.0.1/24" ];
+    ips = [ "10.100.0.1/24" "fd00:100::1/64" ];
     listenPort = 51820;
     privateKeyFile = "/var/lib/wireguard/private.key";
-
     peers = [
       {
         # Windows Client
         publicKey = "l6Oc7idr8xYutd5q8uCMgqFFqjS21vq2NctNDy3vMCE=";
-        allowedIPs = [ "10.100.0.2/32" ];
+        allowedIPs = [ "10.100.0.2/32" "fd00:100::2/128" ];
       }
       {
         # helm
         publicKey = "tcywDJh5ZzpsEq4tdfA7D3B+bEEfmHZ6NORf7Gf7eyA=";
-        allowedIPs = [ "10.100.0.10/32" ];
+        allowedIPs = [ "10.100.0.10/32" "fd00:100::10/128" ];
       }
     ];
   };
