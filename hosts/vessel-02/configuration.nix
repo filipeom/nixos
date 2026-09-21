@@ -14,12 +14,28 @@
 
   boot.runSize = "50%";
   boot.kernelModules = [ "nct6775" ];
+  boot.kernelParams = [
+    "zswap.enabled=1" "zswap.compressor=zstd"
+    "zswap.zpool=zsmalloc" "zswap.max_pool_percent=25"
+  ];
+
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.efi.canTouchEfiVariables = false;
+
+  swapDevices = [
+    { device = "/swapfile"; size = 32768; }
+  ];
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+    "vm.page-cluster" = 0;
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.enp1s0.accept_ra" = 2;
+  };
 
   networking.hostName = "vessel-02"; # Define your hostname.
   networking.useDHCP = false;
@@ -47,10 +63,6 @@
 
   # WireGuard VPN server configuration
   networking.firewall.allowedUDPPorts = [ 51820 ];
-  boot.kernel.sysctl = {
-    "net.ipv4.ip_forward" = 1;
-    "net.ipv6.conf.enp1s0.accept_ra" = 2;
-  };
 
   networking.nat = {
     enable = true;
