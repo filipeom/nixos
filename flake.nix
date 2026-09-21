@@ -21,7 +21,7 @@
         config = {
           allowUnfree = true;
           permittedInsecurePackages = [
-            "electron-39.8.10"
+            "electron-41.9.1"
             "pnpm-10.29.2"
           ];
         };
