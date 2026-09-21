@@ -26,6 +26,8 @@
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.efi.canTouchEfiVariables = false;
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   swapDevices = [
     { device = "/swapfile"; size = 32768; }
   ];
