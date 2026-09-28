@@ -127,8 +127,8 @@
     general = lib.mkForce { };
     listener = lib.mkForce [
       {
-        timeout = 900;
-        on-timeout = "systemctl suspend";
+        timeout = 300;
+        on-timeout = "systemctl suspend-then-hibernate";
       }
     ];
   };
