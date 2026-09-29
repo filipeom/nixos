@@ -64,8 +64,8 @@
   networking.networkmanager.enable = false;
 
   # WireGuard VPN server configuration
-  networking.firewall.allowedUDPPorts = [ 53 51820 ];
-  networking.firewall.allowedTCPPorts = [ 53 ];
+  networking.firewall.allowedUDPPorts = [ 53 443 51820 ];
+  networking.firewall.allowedTCPPorts = [ 53 80 443 ];
 
   networking.nat = {
     enable = true;
@@ -208,7 +208,14 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+    };
+  };
 
   # Enable mDNS/Avahi for .local resolution
   services.avahi = {
@@ -274,15 +281,80 @@
         ''"anchor-01.home.arpa. IN A 192.168.1.124"''
         ''"vessel-01.home.arpa. IN A 192.168.1.110"''
         ''"vessel-02.home.arpa. IN A 192.168.1.111"''
-        ''"cloud.filipeom.dev. IN A 192.168.1.124"''
-        ''"plex.filipeom.dev. IN A 192.168.1.124"''
+        ''"cloud.filipeom.dev. IN A 192.168.1.111"''
+        ''"plex.filipeom.dev. IN A 192.168.1.111"''
       ];
     };
     settings.forward-zone = [ { name = "."; forward-addr = [ "1.1.1.1" "1.0.0.1" ]; } ];
   };
 
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "filipe@filipeom.dev";
+    certs."cloud.filipeom.dev" = {
+      dnsProvider = "ovh";
+      environmentFile = "/var/lib/acme/ovh.env";
+      group = "nginx";
+    };
+    certs."plex.filipeom.dev" = {
+      dnsProvider = "ovh";
+      environmentFile = "/var/lib/acme/ovh.env";
+      group = "nginx";
+    };
+  };
+
+  services.nginx = {
+    enable = true;
+    recommendedTlsSettings = true;
+    recommendedProxySettings = true;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+
+    virtualHosts."cloud.filipeom.dev" = {
+      forceSSL = true;
+      useACMEHost = "cloud.filipeom.dev";
+      extraConfig = ''
+        client_max_body_size 10G;
+      '';
+      locations."/" = {
+        proxyPass = "http://192.168.1.124:7080";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_hide_header X-Powered-By;
+          proxy_hide_header Server;
+        '';
+      };
+    };
+
+    virtualHosts."plex.filipeom.dev" = {
+      forceSSL = true;
+      useACMEHost = "plex.filipeom.dev";
+      locations."/" = {
+        proxyPass = "http://192.168.1.124:32400";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_buffering off;
+        '';
+      };
+    };
+  };
+
+  services.ddclient = {
+    enable = true;
+    protocol = "ovh";
+    server = "www.ovh.com";
+    username = "filipeom.dev-vessel-02";
+    passwordFile = "/var/lib/ddclient/password";
+    domains = [ "vessel-02.filipeom.dev" ];
+    usev4 = "cmdv4,cmdv4=${pkgs.writeShellScript "external-ipv4" ''
+      exec ${pkgs.curl}/bin/curl -4 -fsS https://ifconfig.me/ip
+    ''}";
+    usev6 = "cmdv6,cmdv6=${pkgs.writeShellScript "external-ipv6" ''
+      exec ${pkgs.iproute2}/bin/ip -6 addr show dev enp1s0 scope global dynamic mngtmpaddr \
+        | ${pkgs.gnugrep}/bin/grep inet6 | head -n1 \
+        | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/cut -d/ -f1
+    ''}";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
