@@ -53,7 +53,7 @@
     }];
   };
   networking.defaultGateway = "192.168.1.1";
-  networking.nameservers = [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
+  networking.nameservers = [ "127.0.0.1" ];
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -64,7 +64,8 @@
   networking.networkmanager.enable = false;
 
   # WireGuard VPN server configuration
-  networking.firewall.allowedUDPPorts = [ 51820 ];
+  networking.firewall.allowedUDPPorts = [ 53 51820 ];
+  networking.firewall.allowedTCPPorts = [ 53 ];
 
   networking.nat = {
     enable = true;
@@ -261,8 +262,24 @@
   };
 
   # ---- Minecraft: Better MC [FORGE] BMC4 (Forge 1.20.1) ----
-  # Disabled for now
   services.minecraft-bmc4.enable = true;
+
+  services.unbound = {
+    enable = true;
+    settings.server = {
+      interface = [ "127.0.0.1" "192.168.1.111" ];
+      access-control = [ "192.168.1.0/24 allow" ];
+      local-zone = [ "home.arpa. static" "filipeom.dev. transparent" ];
+      local-data = [
+        ''"anchor-01.home.arpa. IN A 192.168.1.124"''
+        ''"vessel-01.home.arpa. IN A 192.168.1.110"''
+        ''"vessel-02.home.arpa. IN A 192.168.1.111"''
+        ''"cloud.filipeom.dev. IN A 192.168.1.124"''
+        ''"plex.filipeom.dev. IN A 192.168.1.124"''
+      ];
+    };
+    settings.forward-zone = [ { name = "."; forward-addr = [ "1.1.1.1" "1.0.0.1" ]; } ];
+  };
 
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
