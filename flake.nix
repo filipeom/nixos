@@ -31,10 +31,6 @@
       };
 
       homeConfigurations = {
-        anchor-01 = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ hosts/anchor-01/home.nix ];
-        };
         cflinux = home-manager.lib.homeManagerConfiguration {
 	  inherit pkgs;
           modules = [ hosts/cflinux/home.nix ];
@@ -58,6 +54,20 @@
                     lidctl.homeManagerModules.default
                   ];
                 };
+              }
+          ];
+        };
+        anchor-01 = nixpkgs.lib.nixosSystem {
+          inherit system;
+          inherit pkgs;
+          modules = [
+            ./hosts/anchor-01/configuration.nix
+              home-manager.nixosModules.home-manager
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.filipe = import ./hosts/anchor-01/home.nix;
               }
           ];
         };

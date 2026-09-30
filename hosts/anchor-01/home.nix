@@ -2,49 +2,49 @@
 {
   home = {
     packages = with pkgs; [
-      home-manager
+      tmux
+      git
+      btop
     ];
 
     username = "filipe";
     homeDirectory = "/home/${config.home.username}";
 
-    stateVersion = "25.05";
+    stateVersion = "26.05";
   };
 
   imports = [
     ../../modules/programs/git.nix
     ../../modules/programs/zsh.nix
     ../../modules/programs/neovim.nix
-    ../../modules/programs/wakeonlan.nix
     ../../modules/programs/tmux-sessionizer.nix
     ./xdg.nix
   ];
 
-  # XDG
   xdg.enable = true;
 
-  # programs
   programs.git.enable = true;
 
   programs.zsh = {
     enable = true;
     initContent = ''
       bindkey -s ^f "tmux-sessionizer\n"
-    '';
+
+      tmpd() { cd $(mktemp -d) }
+      '';
   };
 
   programs.neovim.enable = true;
-  programs.wakeonlan.enable = true;
 
   programs.tmux-sessionizer = {
     enable = true;
-    searchDirs = [
-      "~/projects"
-    ];
+    searchDirs = [ "~/" ];
   };
+
+  # services
+  services.ssh-agent.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";
-    PATH = "$HOME/.nix-profile/bin:$PATH";
   };
 }
