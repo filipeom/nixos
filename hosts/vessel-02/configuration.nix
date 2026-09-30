@@ -318,7 +318,7 @@
       '';
 
       locations."/" = {
-        proxyPass = "http://192.168.1.124:7080";
+        proxyPass = "http://192.168.1.124:80";
         proxyWebsockets = true;
         extraConfig = ''
           proxy_hide_header X-Powered-By;
