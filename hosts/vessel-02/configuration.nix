@@ -65,7 +65,7 @@
 
   # WireGuard VPN server configuration
   networking.firewall.allowedUDPPorts = [ 53 443 51820 ];
-  networking.firewall.allowedTCPPorts = [ 53 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 53 80 443 32400 ];
 
   networking.nat = {
     enable = true;
@@ -316,6 +316,7 @@
       extraConfig = ''
         client_max_body_size 10G;
       '';
+
       locations."/" = {
         proxyPass = "http://192.168.1.124:7080";
         proxyWebsockets = true;
@@ -329,6 +330,7 @@
     virtualHosts."plex.filipeom.dev" = {
       forceSSL = true;
       useACMEHost = "plex.filipeom.dev";
+
       locations."/" = {
         proxyPass = "http://192.168.1.124:32400";
         proxyWebsockets = true;
@@ -336,7 +338,21 @@
           proxy_buffering off;
         '';
       };
+
+      locations."= /" = {
+        return = "301 https://$host/web/index.html";
+      };
     };
+
+    streamConfig = ''
+      server {
+        listen 32400;
+        proxy_pass 192.168.1.124:32400;
+        proxy_timeout 1h;
+        proxy_connect_timeout 5s;
+        proxy_socket_keepalive on;
+      }
+    '';
   };
 
   services.ddclient = {
