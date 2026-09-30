@@ -10,17 +10,32 @@
       ./hardware-configuration.nix
     ];
 
+  hardware.graphics.enable = true;
+
+  hardware.nvidia = {
+    open = true;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.extraPools = [ "zpool" "mediapool" "cachepool" ];
+  boot.zfs.forceImportRoot = false;
+  services.zfs.autoScrub.enable = true;
+
+  networking.hostId = "2670c489";
   networking.hostName = "anchor-01"; # Define your hostname.
   networking.useDHCP = false;
   networking.interfaces.enp0s31f6 = {
     ipv4.addresses = [ { address = "192.168.1.124"; prefixLength = 24; } ];
   };
   networking.defaultGateway = "192.168.1.1";
-  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+  networking.nameservers = [ "192.168.1.111" "1.1.1.1" ];
+  networking.search = [ "home.arpa" ];
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -48,6 +63,7 @@
     LC_TIME = "pt_PT.UTF-8";
   };
 
+  services.xserver.videoDrivers = [ "nvidia" ];
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -84,6 +100,10 @@
     gawk
     bzip2
     btop
+    smartmontools
+    zstd
+    rsync
+    tmux
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
