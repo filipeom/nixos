@@ -132,6 +132,7 @@
     pulseaudio
     inetutils
     dnsutils
+    system-config-printer
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -159,6 +160,9 @@
   services.displayManager.gdm.enable = true;
 
   services.cloudflare-warp.enable = true;
+
+  # CUPS printing. Add/manage queues with the "Print Settings" GUI.
+  services.printing.enable = true;
 
   # List services that you want to enable:
 
