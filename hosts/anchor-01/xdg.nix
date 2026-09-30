@@ -1,4 +1,4 @@
-{ config, ... }:
+{ lib, pkgs, config, ... }:
 {
   xdg = {
     configHome = "${config.home.homeDirectory}/.config";
