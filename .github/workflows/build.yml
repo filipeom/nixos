@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        host: [helm, vessel-01, vessel-02]
+        host: [helm, anchor-01, vessel-01, vessel-02]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,21 +46,21 @@ jobs:
       - name: Build NixOS Configuration
         run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --dry-run
 
-  build-home-manager:
-    name: Build Home Manager
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        host: [anchor-01]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # build-home-manager:
+  #   name: Build Home Manager
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       host: []
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
-        with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Install Nix
+  #       uses: cachix/install-nix-action@v31
+  #       with:
+  #         github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Home Manager Configuration
-        run: nix build .#homeConfigurations.${{ matrix.host }}.activationPackage --dry-run
+  #     - name: Build Home Manager Configuration
+  #       run: nix build .#homeConfigurations.${{ matrix.host }}.activationPackage --dry-run
