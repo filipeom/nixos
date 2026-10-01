@@ -3,8 +3,6 @@ HOSTNAME=$(shell hostname)
 V01 = filipe@vessel-01.local
 V02 = filipe@vessel-02.local
 
-export NIX_SSHOPTS = -o ProxyJump=anchor-01.filipeom.dev
-
 default: update
 
 .PHONY: check
@@ -30,7 +28,7 @@ deploy-vessel-01:
 
 .PHONY: deploy-vessel-02
 deploy-vessel-02:
-	@echo "Deploying to vessel-02 (boot)..."
+	@echo "Deploying to vessel-02 (switch)..."
 	nixos-rebuild switch --flake .#vessel-02 \
 		--target-host $(V02) --build-host $(V02) --sudo
 

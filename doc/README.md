@@ -6,6 +6,7 @@ The files in this directory adhere to the following convention: `[TYPE]-[ID]_[sh
 
 - `TYPE`: Identifies document type, e.g:
     - ADR: Architecture Decision Record
+    - INV: Inventory
     - RUN: Runbook
     - FS: Functional Specification
 - `ID`: Unique sequence number.
