@@ -167,8 +167,35 @@
     };
   };
 
+  # UPS Monitor
+  power.ups = {
+    enable = true;
+    mode = "netserver";
+    ups.salicru = {
+      driver = "nutdrv_qx";
+      port = "auto";
+      description = "Salicru SPS One 1100VA";
+    };
+    upsd.listen = [
+      { address = "127.0.0.1"; }
+      { address = "192.168.1.124"; }
+    ];
+    users.upsmon = {
+      passwordFile = "/var/lib/nut/upsmon.password";
+      upsmon = "primary";
+    };
+    upsmon = {
+      monitor.salicru = {
+        system = "salicru@127.0.0.1";
+        user = "upsmon";
+        type = "primary";
+      };
+      settings.FINALDELAY = 30;   # let the secondaries stop first
+    };
+  };
+
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 ];
+  networking.firewall.allowedTCPPorts = [ 80 3493 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
