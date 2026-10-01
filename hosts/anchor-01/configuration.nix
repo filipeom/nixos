@@ -135,8 +135,42 @@
     openFirewall = true;
   };
 
+  services.nextcloud = {
+    enable = true;
+    package = pkgs.nextcloud34;
+    hostName = "cloud.filipeom.dev";
+    datadir = "/mnt/hdd/home/nextcloud";
+    https = true;
+    maxUploadSize = "10G";
+    database.createLocally = true;
+    config = {
+      dbtype = "mysql";
+      dbname = "nextcloud";
+      dbuser = "nextcloud";
+      adminuser = null;
+    };
+    settings = {
+      overwriteprotocol = "https";
+      trusted_domains = [ "192.168.1.124" ];
+      trusted_proxies = [ "192.168.1.111" ];
+      default_phone_region = "PT";
+    };
+    secrets = {
+      instanceid   = "/var/lib/nextcloud-secrets/instanceid";
+      secret       = "/var/lib/nextcloud-secrets/secret";
+      passwordsalt = "/var/lib/nextcloud-secrets/passwordsalt";
+    };
+    configureRedis = true;
+    extraApps = {
+      spreed   = pkgs.nextcloud34Packages.apps.spreed;
+      contacts = pkgs.nextcloud34Packages.apps.contacts;
+      notes    = pkgs.nextcloud34Packages.apps.notes;
+      tasks    = pkgs.nextcloud34Packages.apps.tasks;
+    };
+  };
+
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 80 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

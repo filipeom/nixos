@@ -2,9 +2,10 @@
 {
   home = {
     packages = with pkgs; [
-      tmux
-      git
       btop
+      direnv
+      git
+      tmux
     ];
 
     username = "filipe";
