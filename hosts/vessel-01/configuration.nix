@@ -106,6 +106,7 @@
     bluez
     cloudflare-warp
     curl
+    cmake
     ddcutil
     wget
     neovim
