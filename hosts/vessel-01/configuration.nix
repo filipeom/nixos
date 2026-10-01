@@ -7,46 +7,15 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ./hardware.nix
     ];
-
-
-  hardware.i2c.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.graphics.enable = true;
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-
-    powerManagement.enable = true;
-    powerManagement.finegrained = false;
-
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
-  swapDevices = [
-    { device = "/swapfile"; size = 32768; }
-  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Use latest Kernel
   # boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  boot.resumeDevice = "/dev/sda2";
-  boot.kernelParams = [ "resume_offset=229838848" ];
-
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
-  boot.kernelModules = [ "v4l2loopback" ];
-  boot.extraModprobeConfig = ''
-    options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
-  '';
-  security.polkit.enable = true;
 
   networking.hostName = "vessel-01"; # Define your hostname.
   networking.useDHCP = false;
@@ -92,7 +61,6 @@
   };
 
   # Configure keymap in X11
-  services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver.xkb = {
     layout = "pt";
     variant = "";

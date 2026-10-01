@@ -7,26 +7,13 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ./hardware.nix
     ];
-
-  hardware.graphics.enable = true;
-
-  hardware.nvidia = {
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.extraPools = [ "zpool" "mediapool" "cachepool" ];
-  boot.zfs.forceImportRoot = false;
-
-  networking.hostId = "2670c489";
   networking.hostName = "anchor-01"; # Define your hostname.
   networking.useDHCP = false;
   networking.interfaces.enp0s31f6 = {
@@ -62,7 +49,6 @@
     LC_TIME = "pt_PT.UTF-8";
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -130,8 +116,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
-  services.zfs.autoScrub.enable = true;
 
   services.avahi = {
     enable = true;

@@ -7,17 +7,10 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ./hardware.nix
       ../../modules/services/minecraft-atm10.nix
       ../../modules/services/minecraft-bmc4.nix
     ];
-
-  boot.runSize = "50%";
-  boot.kernelModules = [ "nct6775" ];
-  boot.kernelParams = [
-    "zswap.enabled=1" "zswap.compressor=zstd"
-    "zswap.zpool=zsmalloc" "zswap.max_pool_percent=25"
-  ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -26,11 +19,8 @@
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.efi.canTouchEfiVariables = false;
 
+  # Use latest Kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  swapDevices = [
-    { device = "/swapfile"; size = 32768; }
-  ];
 
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
