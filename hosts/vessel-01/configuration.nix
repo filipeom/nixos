@@ -224,6 +224,17 @@
     HibernateDelaySec = "7200";
   };
 
+  power.ups = {
+    enable = true;
+    mode = "netclient";
+    upsmon.monitor.salicru = {
+      system = "salicru@192.168.1.124";
+      user = "upsmon";
+      type = "secondary";
+      passwordFile = "var/lib/nut/upsmon.password";
+    };
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

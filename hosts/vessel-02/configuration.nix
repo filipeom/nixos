@@ -362,6 +362,17 @@
     ''}";
   };
 
+  power.ups = {
+    enable = true;
+    mode = "netclient";
+    upsmon.monitor.salicru = {
+      system = "salicru@192.168.1.124";
+      user = "upsmon";
+      type = "secondary";
+      passwordFile = "var/lib/nut/upsmon.password";
+    };
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
