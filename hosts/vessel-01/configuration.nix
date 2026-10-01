@@ -73,19 +73,6 @@
   # Disable networking (static ip above)
   networking.networkmanager.enable = false;
 
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    dockerSocket.enable = true;
-  };
-
-  virtualisation.containers.containersConf.settings = {
-    containers = {
-      # Mount the /nix store as read-only natively via the container engine
-      volumes = [ "/nix:/nix:ro" ];
-    };
-  };
-
   # Set your time zone.
   time.timeZone = "Europe/Lisbon";
 
@@ -177,6 +164,19 @@
     lm_sensors
     s-tui
   ];
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    dockerSocket.enable = true;
+  };
+
+  virtualisation.containers.containersConf.settings = {
+    containers = {
+      # Mount the /nix store as read-only natively via the container engine
+      volumes = [ "/nix:/nix:ro" ];
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

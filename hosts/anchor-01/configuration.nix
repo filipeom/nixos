@@ -25,7 +25,6 @@
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.extraPools = [ "zpool" "mediapool" "cachepool" ];
   boot.zfs.forceImportRoot = false;
-  services.zfs.autoScrub.enable = true;
 
   networking.hostId = "2670c489";
   networking.hostName = "anchor-01"; # Define your hostname.
@@ -106,6 +105,19 @@
     tmux
   ];
 
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    dockerSocket.enable = true;
+  };
+
+  virtualisation.containers.containersConf.settings = {
+    containers = {
+      # Mount the /nix store as read-only natively via the container engine
+      volumes = [ "/nix:/nix:ro" ];
+    };
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -118,6 +130,8 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  services.zfs.autoScrub.enable = true;
 
   services.avahi = {
     enable = true;
