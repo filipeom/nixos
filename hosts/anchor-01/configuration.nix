@@ -180,7 +180,10 @@
 
     scrapeConfigs = [
       { job_name = "prometheus"; static_configs = [{ targets = [ "127.0.0.1:9090" ]; }]; }
-      { job_name = "nut";        static_configs = [{ targets = [ "127.0.0.1:9199" ]; }]; }
+      { job_name = "nut";
+        metrics_path = "/ups_metrics";
+        static_configs = [{ targets = [ "127.0.0.1:9199" ]; }];
+      }
       { job_name = "node";
         static_configs = [
           { targets = [ "127.0.0.1:9100" ];   labels.instance = "anchor-01"; }
@@ -228,6 +231,10 @@
   };
 
   # mgmt
+  # Stop the kernel from suspending the UPS
+  services.udev.extraRules = ''
+  ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0665", ATTR{idProduct}=="5161", TEST=="power/control", ATTR{power/control}="on"
+'';
   power.ups = {
     enable = true;
     mode = "netserver";
