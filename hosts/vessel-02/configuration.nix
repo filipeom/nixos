@@ -273,6 +273,7 @@
         ''"vessel-02.home.arpa. IN A 192.168.1.111"''
         ''"cloud.filipeom.dev. IN A 192.168.1.111"''
         ''"plex.filipeom.dev. IN A 192.168.1.111"''
+        ''"grafana.filipeom.dev. IN A 194.168.1.111"''
       ];
     };
     settings.forward-zone = [ { name = "."; forward-addr = [ "1.1.1.1" "1.0.0.1" ]; } ];
@@ -281,16 +282,25 @@
   security.acme = {
     acceptTerms = true;
     defaults.email = "filipe@filipeom.dev";
+
     certs."cloud.filipeom.dev" = {
       dnsProvider = "ovh";
       environmentFile = "/var/lib/acme/ovh.env";
       group = "nginx";
     };
+
     certs."plex.filipeom.dev" = {
       dnsProvider = "ovh";
       environmentFile = "/var/lib/acme/ovh.env";
       group = "nginx";
     };
+
+    certs."grafana.filipeom.dev" = {
+      dnsProvider = "ovh";
+      environmentFile = "/var/lib/acme/ovh.env";
+      group = "nginx";
+    };
+
   };
 
   services.nginx = {
@@ -306,7 +316,6 @@
       extraConfig = ''
         client_max_body_size 10G;
       '';
-
       locations."/" = {
         proxyPass = "http://192.168.1.124:80";
         proxyWebsockets = true;
@@ -320,7 +329,6 @@
     virtualHosts."plex.filipeom.dev" = {
       forceSSL = true;
       useACMEHost = "plex.filipeom.dev";
-
       locations."/" = {
         proxyPass = "http://192.168.1.124:32400";
         proxyWebsockets = true;
@@ -328,9 +336,17 @@
           proxy_buffering off;
         '';
       };
-
       locations."= /" = {
         return = "301 https://$host/web/index.html";
+      };
+    };
+
+    virtualHosts."grafana.filipeom.dev" = {
+      forceSSL = true;
+      useACMEHost = "grafana.filipeom.dev";
+      locations."/" = {
+        proxyPass = "http://192.168.1.124:3000";
+        proxyWebsockets =  true;
       };
     };
 
@@ -361,6 +377,10 @@
         | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/cut -d/ -f1
     ''}";
   };
+
+  # mgmt
+  services.prometheus.exporters.node.enable = true;
+  services.prometheus.exporters.node.openFirewall = true;
 
   power.ups = {
     enable = true;

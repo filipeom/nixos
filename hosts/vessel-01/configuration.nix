@@ -224,6 +224,10 @@
     HibernateDelaySec = "7200";
   };
 
+  # mgmt
+  services.prometheus.exporters.node.enable = true;
+  services.prometheus.exporters.node.openFirewall = true;
+
   power.ups = {
     enable = true;
     mode = "netclient";

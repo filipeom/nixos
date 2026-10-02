@@ -128,11 +128,13 @@
     };
   };
 
+  # Plex Media Server
   services.plex = {
     enable = true;
     openFirewall = true;
   };
 
+  # Nextcloud
   services.nextcloud = {
     enable = true;
     package = pkgs.nextcloud34;
@@ -167,7 +169,65 @@
     };
   };
 
-  # UPS Monitor
+  # Grafana
+  services.prometheus = {
+    enable = true;
+    listenAddress = "127.0.0.1";
+    port = 9090;
+    stateDir = "prometheus";         # /var/lib/prometheus (NVMe)
+    retentionTime = "90d";
+    enableReload = true;
+
+    scrapeConfigs = [
+      { job_name = "prometheus"; static_configs = [{ targets = [ "127.0.0.1:9090" ]; }]; }
+      { job_name = "nut";        static_configs = [{ targets = [ "127.0.0.1:9199" ]; }]; }
+      { job_name = "node";
+        static_configs = [
+          { targets = [ "127.0.0.1:9100" ];   labels.instance = "anchor-01"; }
+          { targets = [ "192.168.1.110:9100" ]; labels.instance = "vessel-01"; }
+          { targets = [ "192.168.1.111:9100" ]; labels.instance = "vessel-02"; }
+        ];
+      }
+    ];
+
+    exporters = {
+      node = { enable = true; listenAddress = "127.0.0.1"; };
+      nut.enable = true;
+    };
+  };
+
+  services.grafana = {
+    enable = true;
+    settings = {
+      server = {
+        protocol = "http";
+        http_addr = "192.168.1.124";
+        http_port = 3000;
+        domain = "grafana.filipeom.dev";
+        root_url = "https://grafana.filipeom.dev/";
+        serve_from_sub_path = false;
+      };
+      security = {
+        admin_user = "filipe";
+        admin_password = "$__file{/var/lib/grafana-secrets/admin_password}";
+        secret_key     = "$__file{/var/lib/grafana-secrets/secret_key}";
+      };
+      analytics.reporting_enabled = false;
+      users.allow_sign_up = false;
+    };
+    provision = {
+      enable = true;
+      datasources.settings = {
+        apiVersion = 1;
+        datasources = [{
+          name = "Prometheus"; type = "prometheus"; access = "proxy";
+          url = "http://127.0.0.1:9090"; isDefault = true;
+        }];
+      };
+    };
+  };
+
+  # mgmt
   power.ups = {
     enable = true;
     mode = "netserver";
