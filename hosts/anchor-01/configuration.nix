@@ -8,11 +8,15 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware.nix
+      ../../modules/services/nut-watchdog.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Keep the UPS's buggy USB HID firmware from wedging under runtime PM.
+  boot.kernelParams = [ "usbcore.autosuspend=-1" ];
 
   networking.hostName = "anchor-01"; # Define your hostname.
   networking.useDHCP = false;
@@ -178,6 +182,44 @@
     retentionTime = "90d";
     enableReload = true;
 
+    rules = [
+      ''
+        groups:
+          - name: nut
+            rules:
+              - alert: NUTExporterDown
+                expr: up{job="nut"} == 0
+                for: 2m
+                labels:
+                  severity: critical
+                annotations:
+                  summary: NUT exporter on {{ $labels.instance }} is down
+
+              - alert: UPSDataStale
+                expr: absent(network_ups_tools_ups_status)
+                for: 2m
+                labels:
+                  severity: critical
+                annotations:
+                  summary: UPS metrics missing, NUT driver is likely stale
+
+              - alert: UPSOnBattery
+                expr: network_ups_tools_ups_status{flag="OB"} == 1
+                for: 1m
+                labels:
+                  severity: warning
+                annotations:
+                  summary: UPS is running on battery
+
+              - alert: UPSLowBattery
+                expr: network_ups_tools_ups_status{flag="LB"} == 1
+                labels:
+                  severity: critical
+                annotations:
+                  summary: UPS battery is low
+      ''
+    ];
+
     scrapeConfigs = [
       { job_name = "prometheus"; static_configs = [{ targets = [ "127.0.0.1:9090" ]; }]; }
       { job_name = "nut";
@@ -231,10 +273,8 @@
   };
 
   # mgmt
-  # Stop the kernel from suspending the UPS
-  services.udev.extraRules = ''
-  ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0665", ATTR{idProduct}=="5161", TEST=="power/control", ATTR{power/control}="on"
-'';
+  # Restart NUT on its own if the driver stops serving data.
+  my.nut-watchdog.enable = true;
   power.ups = {
     enable = true;
     mode = "netserver";
