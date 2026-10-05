@@ -73,7 +73,7 @@
         };
 
         master = {
-          new_status = "master";
+          new_status = "inherit";
           new_on_top = true;
           orientation = "left";
           mfact = 0.55;
@@ -182,6 +182,7 @@
         ];
 
         windowrule = [
+          "match:class .*, suppress_event maximize"
           "match:class ^(pavucontrol)$, float on"
           "match:class ^(blueman-manager)$, float on"
           "match:class ^(xdg-desktop-portal-gtk)$, float on"
