@@ -18,7 +18,7 @@
     ../../modules/programs/neovim.nix
     ../../modules/programs/tmux-sessionizer.nix
     # Services
-    ./xdg.nix
+    ../../modules/home/xdg.nix
   ];
 
   xdg.enable = true;
@@ -50,8 +50,8 @@
   programs.tmux-sessionizer = {
     enable = true;
     searchDirs = [
-      "~/Projects"
-      "~/Documents"
+      "~/projects"
+      "~/notes"
     ];
   };
 

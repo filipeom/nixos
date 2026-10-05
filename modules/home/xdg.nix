@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 {
   xdg = {
     configHome = "${config.home.homeDirectory}/.config";
@@ -6,7 +6,6 @@
     dataHome = "${config.home.homeDirectory}/.local/share";
     stateHome = "${config.home.homeDirectory}/.local/state";
 
-    # Some config files we need
     configFile = {
       "tmux/tmux.conf".source = ../../dotfiles/tmux/tmux.conf;
     };

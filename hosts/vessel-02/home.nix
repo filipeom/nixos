@@ -21,7 +21,7 @@
     ../../modules/programs/neovim.nix
     ../../modules/programs/wakeonlan.nix
     ../../modules/programs/tmux-sessionizer.nix
-    ./xdg.nix
+    ../../modules/home/xdg.nix
   ];
 
   # XDG
@@ -42,7 +42,7 @@
 
   programs.tmux-sessionizer = {
     enable = true;
-    searchDirs = [ "~/" ];
+    searchDirs = [ "~/projects" "~/notes" ];
   };
 
   programs.opencode = {
