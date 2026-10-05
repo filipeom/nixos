@@ -272,6 +272,33 @@
     };
   };
 
+  services.home-assistant = {
+    enable = true;
+
+    extraComponents = [
+      "default_config"
+      "zha"
+    ];
+
+    config = {
+      homeassistant = {
+        name = "Home";
+        time_zone = "Europe/Lisbon";
+        internal_url = "http://192.168.1.124:8123";
+        external_url = "https://ha.filipeom.dev";
+      };
+
+      http = {
+        server_port = 8123;
+        use_x_forwarded_for = true;
+        # Only the edge (vessel-02) may set X-Forwarded-* headers.
+        trusted_proxies = [ "192.168.1.111" ];
+      };
+    };
+  };
+
+  systemd.services.home-assistant.serviceConfig.MemoryMax = "2G";
+
   # mgmt
   # Restart NUT on its own if the driver stops serving data.
   my.nut-watchdog.enable = true;
