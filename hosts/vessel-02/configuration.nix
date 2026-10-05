@@ -144,18 +144,6 @@
     ];
   };
 
-  security.sudo.extraRules = [
-    {
-      users = [ "filipe" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
-
   programs.zsh.enable = true;
 
   programs.nix-ld.enable = true;
