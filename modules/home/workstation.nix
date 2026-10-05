@@ -56,6 +56,7 @@
 
     music = "${config.home.homeDirectory}/media/music";
     pictures = "${config.home.homeDirectory}/media/photos";
+    projects = "${config.home.homeDirectory}/projects";
     templates = "${config.home.homeDirectory}/documents/templates";
     videos = "${config.home.homeDirectory}/media/videos";
     publicShare = "${config.home.homeDirectory}/public";
