@@ -1,5 +1,7 @@
 { config, ... }:
 {
+  xdg.enable = true;
+
   xdg = {
     configHome = "${config.home.homeDirectory}/.config";
     cacheHome = "${config.home.homeDirectory}/.cache";
