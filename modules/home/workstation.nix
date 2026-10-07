@@ -6,6 +6,7 @@
     ../programs/zsh.nix
     ../programs/neovim.nix
     ../programs/kitty.nix
+    ../programs/ncspot.nix
     ../programs/tmux-sessionizer.nix
     # Services
     ../services/hyprland.nix
@@ -108,6 +109,7 @@
 
   programs.neovim.enable = true;
   programs.kitty.enable = true;
+  programs.ncspot.enable = true;
   programs.waybar.enable = true;
 
   programs.tmux-sessionizer = {
