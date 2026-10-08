@@ -466,13 +466,22 @@
     }
 
     // ---- sshd authentication failures ----
+    // OpenSSH >= 9.8 logs per-connection failures from sshd-session, while
+    // the listener (sshd) logs unrelated noise; match the whole unit cgroup.
     loki.source.journal "sshd" {
-      matches    = "SYSLOG_IDENTIFIER=sshd"
+      matches    = "_SYSTEMD_UNIT=sshd.service"
       labels     = { job = "sshd", host = "vessel-02" }
       forward_to = [loki.process.sshd.receiver]
     }
 
     loki.process "sshd" {
+      // Keep only authentication failures so the stream and its GeoIP
+      // labels are meaningful (listener/penalty messages are dropped).
+      stage.match {
+        selector = "{job=\"sshd\"} !~ \"Failed password|Failed publickey|Invalid user|Connection closed by|Connection reset by\""
+        action   = "drop"
+      }
+
       stage.regex {
         expression = "(?:Failed password|Failed publickey|Invalid user|Connection closed by|Connection reset by).*?(?P<ip>(?:\\d{1,3}\\.){3}\\d{1,3}|[0-9a-fA-F]{0,4}:[0-9a-fA-F:]+)"
       }
