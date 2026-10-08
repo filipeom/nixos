@@ -1,0 +1,165 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "continuous-GrYlRd" }, "mappings": [] },
+        "overrides": []
+      },
+      "gridPos": { "h": 13, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "view": { "id": "coords", "lat": 39, "lon": -8, "zoom": 2 },
+        "controls": { "showZoom": true, "mouseWheelZoom": true, "showScale": false, "showAttribution": true },
+        "basemap": { "type": "default", "name": "Layer 0", "config": { "theme": "dark", "showLabels": true } },
+        "layers": [
+          {
+            "type": "markers",
+            "name": "requests",
+            "config": {
+              "style": {
+                "size": { "fixed": 7 },
+                "color": { "fixed": "dark-blue" },
+                "opacity": 0.6
+              },
+              "showLegend": false
+            },
+            "location": { "mode": "coords", "latitude": "latitude", "longitude": "longitude" },
+            "tooltip": true
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "sum by (latitude, longitude, country) (count_over_time({job=\"nginx\"} [24h]))",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "Web requests by location (24h)",
+      "type": "geomap"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "continuous-RdYlGr" }, "mappings": [] },
+        "overrides": []
+      },
+      "gridPos": { "h": 13, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "options": {
+        "view": { "id": "coords", "lat": 39, "lon": -8, "zoom": 2 },
+        "controls": { "showZoom": true, "mouseWheelZoom": true, "showScale": false, "showAttribution": true },
+        "basemap": { "type": "default", "name": "Layer 0", "config": { "theme": "dark", "showLabels": true } },
+        "layers": [
+          {
+            "type": "markers",
+            "name": "bans",
+            "config": {
+              "style": {
+                "size": { "fixed": 8 },
+                "color": { "fixed": "dark-red" },
+                "opacity": 0.8
+              },
+              "showLegend": false
+            },
+            "location": { "mode": "coords", "latitude": "latitude", "longitude": "longitude" },
+            "tooltip": true
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "sum by (latitude, longitude, country) (count_over_time({job=\"fail2ban\"} |= \"Ban\" [7d]))",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "fail2ban bans by location (7d)",
+      "type": "geomap"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "continuous-RdYlGr" }, "mappings": [] },
+        "overrides": []
+      },
+      "gridPos": { "h": 13, "w": 12, "x": 0, "y": 13 },
+      "id": 3,
+      "options": {
+        "view": { "id": "coords", "lat": 39, "lon": -8, "zoom": 2 },
+        "controls": { "showZoom": true, "mouseWheelZoom": true, "showScale": false, "showAttribution": true },
+        "basemap": { "type": "default", "name": "Layer 0", "config": { "theme": "dark", "showLabels": true } },
+        "layers": [
+          {
+            "type": "markers",
+            "name": "ssh",
+            "config": {
+              "style": {
+                "size": { "fixed": 7 },
+                "color": { "fixed": "dark-orange" },
+                "opacity": 0.7
+              },
+              "showLegend": false
+            },
+            "location": { "mode": "coords", "latitude": "latitude", "longitude": "longitude" },
+            "tooltip": true
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "sum by (latitude, longitude, country) (count_over_time({job=\"sshd\"} [7d]))",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "SSH failures by location (7d)",
+      "type": "geomap"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": { "custom": { "align": "auto", "filterable": true } },
+        "overrides": []
+      },
+      "gridPos": { "h": 13, "w": 12, "x": 12, "y": 13 },
+      "id": 4,
+      "options": { "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "topk(15, sum by (country) (count_over_time({job=\"nginx\"} [24h])))",
+          "queryType": "instant",
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "topk(15, sum by (country) (count_over_time({job=\"sshd\"} [7d])))",
+          "queryType": "instant",
+          "refId": "B"
+        }
+      ],
+      "title": "Top source countries (web 24h / ssh 7d)",
+      "type": "table"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": ["edge", "map", "geoip"],
+  "templating": { "list": [] },
+  "time": { "from": "now-24h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Edge Map",
+  "uid": "edge-map",
+  "version": 1
+}

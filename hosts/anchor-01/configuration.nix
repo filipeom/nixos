@@ -233,6 +233,11 @@
           { targets = [ "192.168.1.111:9100" ]; labels.instance = "vessel-02"; }
         ];
       }
+      { job_name = "fail2ban";
+        static_configs = [
+          { targets = [ "192.168.1.111:9191" ]; labels.instance = "vessel-02"; }
+        ];
+      }
     ];
 
     exporters = {
@@ -264,12 +269,80 @@
       enable = true;
       datasources.settings = {
         apiVersion = 1;
-        datasources = [{
-          name = "Prometheus"; type = "prometheus"; access = "proxy";
-          url = "http://127.0.0.1:9090"; isDefault = true;
+        datasources = [
+          {
+            name = "Prometheus"; uid = "prometheus"; type = "prometheus"; access = "proxy";
+            url = "http://127.0.0.1:9090"; isDefault = true;
+          }
+          {
+            name = "Loki"; uid = "loki"; type = "loki"; access = "proxy";
+            url = "http://127.0.0.1:3100";
+          }
+        ];
+      };
+      dashboards.settings = {
+        apiVersion = 1;
+        providers = [{
+          name = "edge";
+          type = "file";
+          folder = "Edge";
+          disableDeletion = false;
+          updateIntervalSeconds = 30;
+          allowUiUpdates = true;
+          options.path = ./dashboards;
         }];
       };
     };
+  };
+
+  # ---- Log aggregation for edge abuse monitoring (vessel-02 pushes here) ----
+  services.loki = {
+    enable = true;
+    configuration = {
+      auth_enabled = false;
+      analytics.reporting_enabled = false;
+      server = {
+        http_listen_address = "192.168.1.124";
+        http_listen_port = 3100;
+        grpc_listen_address = "127.0.0.1";
+        grpc_listen_port = 9096;
+      };
+      common = {
+        instance_addr = "127.0.0.1";
+        path_prefix = "/var/lib/loki";
+        replication_factor = 1;
+        ring.kvstore.store = "inmemory";
+        storage.filesystem = {
+          chunks_directory = "/var/lib/loki/chunks";
+          rules_directory = "/var/lib/loki/rules";
+        };
+      };
+      schema_config.configs = [{
+        from = "2026-01-01";
+        store = "tsdb";
+        object_store = "filesystem";
+        schema = "v13";
+        index = {
+          prefix = "index/";
+          period = "24h";
+        };
+      }];
+      limits_config = {
+        retention_period = "30d";
+        allow_structured_metadata = true;
+      };
+      compactor = {
+        working_directory = "/var/lib/loki/compactor";
+        retention_enabled = true;
+        delete_request_store = "filesystem";
+      };
+    };
+  };
+
+  # Keep the observability stack from competing with Nextcloud/Plex (ADR-001).
+  systemd.services.loki.serviceConfig = {
+    MemoryMax = "1G";
+    CPUWeight = 50;
   };
 
   services.home-assistant = {
@@ -329,7 +402,7 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 3000 3493 ];
+  networking.firewall.allowedTCPPorts = [ 80 3000 3100 3493 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

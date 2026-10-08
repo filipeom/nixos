@@ -55,7 +55,7 @@
 
   # WireGuard VPN server configuration
   networking.firewall.allowedUDPPorts = [ 53 443 51820 ];
-  networking.firewall.allowedTCPPorts = [ 53 80 443 32400 ];
+  networking.firewall.allowedTCPPorts = [ 53 80 443 32400 9191 ];
 
   networking.nat = {
     enable = true;
@@ -365,6 +365,174 @@
         | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/cut -d/ -f1
     ''}";
   };
+
+  # ---- Edge abuse prevention ----
+  services.fail2ban = {
+    enable = true;
+    bantime = "1h";
+    maxretry = 3;
+    bantime-increment = {
+      enable = true;
+      maxtime = "168h";
+    };
+    # Never ban local clients: the LAN and the WireGuard peers must always
+    # keep access to the edge (avoids locking ourselves out).
+    ignoreIP = [
+      "192.168.1.0/24"
+      "10.100.0.0/24"
+      "fd00::/64"
+      "fd00:100::/64"
+    ];
+    # The sshd jail is provided and enabled by the NixOS module.
+    jails.nginx-botsearch.settings = {
+      enabled = true;
+      # nginx access logs are plain files, not in the journal.
+      backend = "auto";
+      logpath = "/var/log/nginx/access.log";
+    };
+  };
+
+  systemd.services.fail2ban-exporter = {
+    description = "Prometheus exporter for fail2ban";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "fail2ban.service" ];
+    requires = [ "fail2ban.service" ];
+    serviceConfig = {
+      # The fail2ban socket is root-only, so the exporter must run as root.
+      ExecStart = "${pkgs.prometheus-fail2ban-exporter}/bin/fail2ban-prometheus-exporter --collector.f2b.socket=/run/fail2ban/fail2ban.sock --web.listen-address=192.168.1.111:9191";
+      User = "root";
+      Restart = "always";
+      RestartSec = 5;
+      NoNewPrivileges = true;
+      PrivateDevices = true;
+      PrivateTmp = true;
+      ProtectHome = true;
+      ProtectSystem = "strict";
+    };
+  };
+
+  # ---- Observability: ship edge logs to Loki on anchor-01 ----
+  services.alloy = {
+    enable = true;
+    extraFlags = [ "--disable-reporting" ];
+  };
+
+  # nginx writes its access log as nginx:nginx (0640).
+  systemd.services.alloy.serviceConfig.SupplementaryGroups = [ "nginx" ];
+
+  environment.etc."alloy/config.alloy".text = ''
+    logging {
+      level  = "warn"
+      format = "logfmt"
+    }
+
+    // ---- nginx access log ----
+    local.file_match "nginx" {
+      path_targets = [{
+        __path__ = "/var/log/nginx/access.log",
+        job      = "nginx",
+        host     = "vessel-02",
+      }]
+    }
+
+    loki.source.file "nginx" {
+      targets    = local.file_match.nginx.targets
+      forward_to = [loki.process.nginx.receiver]
+    }
+
+    loki.process "nginx" {
+      stage.regex {
+        expression = "^(?P<remote_addr>[0-9a-fA-F:.]+) - (?P<remote_user>\\S+) \\[(?P<ts>[^\\]]+)\\] \"(?P<method>\\S+) (?P<path>\\S+) [^\"]*\" (?P<status>\\d{3}) (?P<bytes>\\d+|-)(?: \"(?P<referer>[^\"]*)\" \"(?P<user_agent>[^\"]*)\")?"
+      }
+
+      stage.geoip {
+        db      = "${pkgs.dbip-city-lite.mmdb}"
+        source  = "remote_addr"
+        db_type = "city"
+      }
+
+      stage.labels {
+        values = {
+          http_status  = "status",
+          method       = "method",
+          country      = "geoip_country_name",
+          country_code = "geoip_country_code",
+          latitude     = "geoip_location_latitude",
+          longitude    = "geoip_location_longitude",
+        }
+      }
+
+      forward_to = [loki.write.anchor.receiver]
+    }
+
+    // ---- sshd authentication failures ----
+    loki.source.journal "sshd" {
+      matches    = "SYSLOG_IDENTIFIER=sshd"
+      labels     = { job = "sshd", host = "vessel-02" }
+      forward_to = [loki.process.sshd.receiver]
+    }
+
+    loki.process "sshd" {
+      stage.regex {
+        expression = "(?:Failed password|Failed publickey|Invalid user|Connection closed by|Connection reset by).*?(?P<ip>(?:\\d{1,3}\\.){3}\\d{1,3}|[0-9a-fA-F]{0,4}:[0-9a-fA-F:]+)"
+      }
+
+      stage.geoip {
+        db      = "${pkgs.dbip-city-lite.mmdb}"
+        source  = "ip"
+        db_type = "city"
+      }
+
+      stage.labels {
+        values = {
+          country      = "geoip_country_name",
+          country_code = "geoip_country_code",
+          latitude     = "geoip_location_latitude",
+          longitude    = "geoip_location_longitude",
+        }
+      }
+
+      forward_to = [loki.write.anchor.receiver]
+    }
+
+    // ---- fail2ban ban/unban events ----
+    loki.source.journal "fail2ban" {
+      matches    = "_SYSTEMD_UNIT=fail2ban.service"
+      labels     = { job = "fail2ban", host = "vessel-02" }
+      forward_to = [loki.process.fail2ban.receiver]
+    }
+
+    loki.process "fail2ban" {
+      stage.regex {
+        expression = "\\[(?P<jail>[^\\]]+)\\] (?P<action>Ban|Unban) (?P<ip>(?:\\d{1,3}\\.){3}\\d{1,3}|[0-9a-fA-F:]+)"
+      }
+
+      stage.geoip {
+        db      = "${pkgs.dbip-city-lite.mmdb}"
+        source  = "ip"
+        db_type = "city"
+      }
+
+      stage.labels {
+        values = {
+          jail         = "",
+          action       = "",
+          country      = "geoip_country_name",
+          country_code = "geoip_country_code",
+          latitude     = "geoip_location_latitude",
+          longitude    = "geoip_location_longitude",
+        }
+      }
+
+      forward_to = [loki.write.anchor.receiver]
+    }
+
+    loki.write "anchor" {
+      endpoint {
+        url = "http://192.168.1.124:3100/loki/api/v1/push"
+      }
+    }
+  '';
 
   # mgmt
   services.prometheus.exporters.node.enable = true;
