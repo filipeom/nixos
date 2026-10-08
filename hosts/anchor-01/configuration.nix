@@ -269,6 +269,15 @@
       enable = true;
       datasources.settings = {
         apiVersion = 1;
+        # One-time migration: Grafana >= 12.1 cannot change a provisioned
+        # datasource's UID in place (update matches on ID+UID and fails with
+        # "data source not found"). Delete the stale rows once so they are
+        # recreated with the uids defined below. Remove this block after the
+        # first successful start.
+        deleteDatasources = [
+          { name = "Prometheus"; orgId = 1; }
+          { name = "Loki"; orgId = 1; }
+        ];
         datasources = [
           {
             name = "Prometheus"; uid = "prometheus"; type = "prometheus"; access = "proxy";
