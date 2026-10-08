@@ -269,15 +269,6 @@
       enable = true;
       datasources.settings = {
         apiVersion = 1;
-        # One-time migration: Grafana >= 12.1 cannot change a provisioned
-        # datasource's UID in place (update matches on ID+UID and fails with
-        # "data source not found"). Delete the stale rows once so they are
-        # recreated with the uids defined below. Remove this block after the
-        # first successful start.
-        deleteDatasources = [
-          { name = "Prometheus"; orgId = 1; }
-          { name = "Loki"; orgId = 1; }
-        ];
         datasources = [
           {
             name = "Prometheus"; uid = "prometheus"; type = "prometheus"; access = "proxy";
@@ -285,7 +276,8 @@
           }
           {
             name = "Loki"; uid = "loki"; type = "loki"; access = "proxy";
-            url = "http://127.0.0.1:3100";
+            # Loki listens on the LAN address only, not on loopback.
+            url = "http://192.168.1.124:3100";
           }
         ];
       };
@@ -339,6 +331,9 @@
       limits_config = {
         retention_period = "30d";
         allow_structured_metadata = true;
+        # The top-client-IP / top-path LogQL queries aggregate over many
+        # per-IP series; the default limit of 500 rejects them.
+        max_query_series = 10000;
       };
       compactor = {
         working_directory = "/var/lib/loki/compactor";

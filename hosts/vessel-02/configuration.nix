@@ -442,7 +442,7 @@
 
     loki.process "nginx" {
       stage.regex {
-        expression = "^(?P<remote_addr>[0-9a-fA-F:.]+) - (?P<remote_user>\\S+) \\[(?P<ts>[^\\]]+)\\] \"(?P<method>\\S+) (?P<path>\\S+) [^\"]*\" (?P<status>\\d{3}) (?P<bytes>\\d+|-)(?: \"(?P<referer>[^\"]*)\" \"(?P<user_agent>[^\"]*)\")?"
+        expression = "^(?P<remote_addr>[0-9a-fA-F:.]+) - (?P<remote_user>\\S+) \\[(?P<ts>[^\\]]+)\\] \"(?P<method>[A-Z]+) (?P<path>\\S+) [^\"]*\" (?P<status>\\d{3}) (?P<bytes>\\d+|-)(?: \"(?P<referer>[^\"]*)\" \"(?P<user_agent>[^\"]*)\")?"
       }
 
       stage.geoip {
