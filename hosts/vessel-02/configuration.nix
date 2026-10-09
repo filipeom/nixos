@@ -289,6 +289,11 @@
       group = "nginx";
     };
 
+    certs."ha.filipeom.dev" = {
+      dnsProvider = "ovh";
+      environmentFile = "/var/lib/acme/ovh.env";
+      group = "nginx";
+    };
   };
 
   services.nginx = {
@@ -329,15 +334,6 @@
       };
     };
 
-    virtualHosts."grafana.filipeom.dev" = {
-      forceSSL = true;
-      useACMEHost = "grafana.filipeom.dev";
-      locations."/" = {
-        proxyPass = "http://192.168.1.124:3000";
-        proxyWebsockets =  true;
-      };
-    };
-
     streamConfig = ''
       server {
         listen 32400;
@@ -347,6 +343,25 @@
         proxy_socket_keepalive on;
       }
     '';
+
+
+    virtualHosts."grafana.filipeom.dev" = {
+      forceSSL = true;
+      useACMEHost = "grafana.filipeom.dev";
+      locations."/" = {
+        proxyPass = "http://192.168.1.124:3000";
+        proxyWebsockets =  true;
+      };
+    };
+
+    virtualHosts."ha.filipeom.dev" = {
+      forceSSL = true;
+      useACMEHost = "ha.filipeom.dev";
+      locations."/" = {
+        proxyPass = "http://192.168.1.124:8123";
+        proxyWebsockets =  true;
+      };
+    };
   };
 
   services.ddclient = {
