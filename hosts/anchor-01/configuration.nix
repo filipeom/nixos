@@ -355,6 +355,10 @@
     extraComponents = [
       "default_config"
       "zha"
+      "ffmpeg"
+      "stream"
+      "onvif"
+      "mobile_app"
     ];
 
     config = {
