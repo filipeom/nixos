@@ -362,6 +362,8 @@
     ];
 
     config = {
+      default_config = {};
+
       homeassistant = {
         name = "Home";
         time_zone = "Europe/Lisbon";
