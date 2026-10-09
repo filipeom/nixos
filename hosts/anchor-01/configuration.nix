@@ -377,6 +377,89 @@
         # Only the edge (vessel-02) may set X-Forwarded-* headers.
         trusted_proxies = [ "192.168.1.111" ];
       };
+
+      script = {
+        ptz_left = {
+          alias = "PTZ left";
+          mode = "restart";
+          sequence = [
+            {
+              action = "onvif.ptz";
+              target.entity_id = "camera.tapo_c210_mainstream";
+              data = {
+                pan = "LEFT";
+                distance = 0.3;
+                speed = 1;
+                move_mode = "ContinuousMove";
+                continuous_duration = 0.5;
+              };
+            }
+          ];
+        };
+        ptz_right = {
+          alias = "PTZ right";
+          mode = "restart";
+          sequence = [
+            {
+              action = "onvif.ptz";
+              target.entity_id = "camera.tapo_c210_mainstream";
+              data = {
+                pan = "RIGHT";
+                distance = 0.3;
+                speed = 1;
+                move_mode = "ContinuousMove";
+                continuous_duration = 0.5;
+              };
+            }
+          ];
+        };
+        ptz_up = {
+          alias = "PTZ up";
+          mode = "restart";
+          sequence = [
+            {
+              action = "onvif.ptz";
+              target.entity_id = "camera.tapo_c210_mainstream";
+              data = {
+                tilt = "UP";
+                distance = 0.3;
+                speed = 1;
+                move_mode = "ContinuousMove";
+                continuous_duration = 0.5;
+              };
+            }
+          ];
+        };
+        ptz_down = {
+          alias = "PTZ down";
+          mode = "restart";
+          sequence = [
+            {
+              action = "onvif.ptz";
+              target.entity_id = "camera.tapo_c210_mainstream";
+              data = {
+                tilt = "DOWN";
+                distance = 0.3;
+                speed = 1;
+                move_mode = "ContinuousMove";
+                continuous_duration = 0.5;
+              };
+            }
+          ];
+        };
+        ptz_stop = {
+          alias = "PTZ stop";
+          sequence = [
+            {
+              action = "onvif.ptz";
+              target.entity_id = "camera.tapo_c210_mainstream";
+              data = {
+                move_mode = "Stop";
+              };
+            }
+          ];
+        };
+      };
     };
   };
 
