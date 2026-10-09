@@ -141,7 +141,7 @@
   # Nextcloud
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud34;
+    package = pkgs.nextcloud35;
     hostName = "cloud.filipeom.dev";
     datadir = "/mnt/hdd/home/nextcloud";
     https = true;
@@ -166,10 +166,10 @@
     };
     configureRedis = true;
     extraApps = {
-      spreed   = pkgs.nextcloud34Packages.apps.spreed;
-      contacts = pkgs.nextcloud34Packages.apps.contacts;
-      notes    = pkgs.nextcloud34Packages.apps.notes;
-      tasks    = pkgs.nextcloud34Packages.apps.tasks;
+      spreed   = pkgs.nextcloud35Packages.apps.spreed;
+      contacts = pkgs.nextcloud35Packages.apps.contacts;
+      notes    = pkgs.nextcloud35Packages.apps.notes;
+      tasks    = pkgs.nextcloud35Packages.apps.tasks;
     };
   };
 
