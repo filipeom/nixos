@@ -39,28 +39,10 @@ dotfiles/
 make                         # nix flake update
 make rebuild                 # local nixos-rebuild switch
 make build                   # nix build (verify without deploying)
+make diff                    # package diff of updated flake vs running system
 make check                   # SSH + current generation check on the vessels
-
-# remote deploy (direct LAN, <host>.local)
-make deploy-vessel-01        # deploy → vessel-01 (switch)
-make deploy-vessel-02        # deploy → vessel-02 (switch)
-make deploy-all              # deploy → both remotes
-
-# deploy + reboot + verify the new generation is active
-make deploy-vessel-01-reboot
-make deploy-vessel-02-reboot
-
-# reboot only
-make reboot-vessel-01        # reboot vessel-01 and verify boot generation
-make reboot-vessel-02        # reboot vessel-02 and verify boot generation
-
 make clean                   # nix-collect-garbage -d
 ```
-
-Remote targets reach the hosts directly over the LAN (`vessel-01.local`,
-`vessel-02.local`); no jump host is needed. The `*-reboot` targets deploy,
-reboot, wait for the host to come back, and verify the new generation is active
-— all in one step.
 
 `scripts/reboot-host.sh <ssh-host>` is the underlying reboot+verify script,
 callable directly for any host.
