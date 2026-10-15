@@ -62,6 +62,19 @@
     enableIPv6 = true;
     externalInterface = "enp1s0";
     internalInterfaces = [ "wg0" ];
+    # The NAT module accepts wg0 -> enp1s0 by interface only, and the LAN is on
+    # enp1s0 too, so that accept also matches wg0 -> LAN. Insert destination-based
+    # drops before it so peers get internet-only forwarding: no LAN access and
+    # no peer-to-peer traffic. flushNat recreates nixos-filter-forward on every
+    # reload, so these inserts never accumulate.
+    extraCommands = ''
+      iptables  -t filter -I nixos-filter-forward 1 -i wg0 -d 10.0.0.0/8     -j DROP
+      iptables  -t filter -I nixos-filter-forward 1 -i wg0 -d 172.16.0.0/12  -j DROP
+      iptables  -t filter -I nixos-filter-forward 1 -i wg0 -d 192.168.0.0/16 -j DROP
+      iptables  -t filter -I nixos-filter-forward 1 -i wg0 -d 169.254.0.0/16 -j DROP
+      ip6tables -t filter -I nixos-filter-forward 1 -i wg0 -d fc00::/7        -j DROP
+      ip6tables -t filter -I nixos-filter-forward 1 -i wg0 -d fe80::/10       -j DROP
+    '';
   };
 
   networking.wireguard.interfaces.wg0 = {
