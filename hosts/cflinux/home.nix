@@ -64,6 +64,6 @@
     "$HOME/.local/bin"
     "$HOME/.cargo/bin"
     "$HOME/.nix-profile/bin"
-    "$HOME/go/bin"
+    "$HOME/.toolbox/bin"
   ];
 }
