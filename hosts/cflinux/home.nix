@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 {
-  home.username = "filipe";
-  home.homeDirectory = "/home/filipe";
+  home.username = "filipeom";
+  home.homeDirectory = "/home/ANT.AMAZON.COM/filipeom";
   home.stateVersion = "26.05";
 
   home.packages = with pkgs; [
@@ -33,7 +33,7 @@
     };
     settings = {
       user.name = lib.mkForce "Filipe Marques";
-      user.email = lib.mkForce "fmarques@cloudflare.com";
+      user.email = lib.mkForce "filipeom@amazon.com";
     };
   };
 
@@ -41,17 +41,13 @@
     enable = true;
     initContent = ''
       bindkey -s ^f "tmux-sessionizer\n"
-
-      tmpd() { cd $(mktemp -d) }
      '';
-    shellAliases.oc = "clear && opencode auth login https://opencode.cloudflare.dev && opencode mcp auth cf-portal && opencode";
   };
 
   programs.tmux-sessionizer = {
     enable = true;
     searchDirs = [
-      "~/projects"
-      "~/notes"
+      "~/Projects"
     ];
   };
 
@@ -60,19 +56,6 @@
   programs.kitty = {
     enable = true;
     package = null;
-  };
-
-  programs.opencode = {
-    enable = true;
-    package = pkgs.writeShellScriptBin "opencode" ''
-      exec ${pkgs.nodejs_26}/bin/npx -y opencode-ai@latest "$@"
-    '';
-    settings = {
-      model = "google/gemini-3.8-flash";
-      autoupdate = false;
-      permission = "allow";
-      lsp = true;
-    };
   };
 
   programs.home-manager.enable = true;
