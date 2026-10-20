@@ -48,6 +48,7 @@
     enable = true;
     searchDirs = [
       "~/Projects"
+      "~/Notes"
     ];
   };
 
