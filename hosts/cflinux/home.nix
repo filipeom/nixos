@@ -28,12 +28,18 @@
     enable = true;
     signing = {
       format = "ssh";
-      key = "~/.ssh/id_ed25519";
+      key = "~/.ssh/id_ecdsa";
       signByDefault = true;
     };
     settings = {
       user.name = lib.mkForce "Filipe Marques";
       user.email = lib.mkForce "filipeom@amazon.com";
+    };
+    lfs.enable = true;
+    iniContent.filter.lfs = {
+      clean = lib.mkForce "git-lfs clean -- %f";
+      smudge = lib.mkForce "git-lfs smudge -- %f";
+      process = lib.mkForce "git-lfs filter-process";
     };
   };
 
