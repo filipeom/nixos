@@ -47,7 +47,12 @@
     enable = true;
     initContent = ''
       bindkey -s ^f "tmux-sessionizer\n"
-     '';
+
+      # Refresh Midway SSH cert if missing or older than 20h
+      if [[ ! -f ~/.ssh/id_ecdsa-cert.pub ]] || [[ -n $(find ~/.ssh/id_ecdsa-cert.pub -mmin +1200) ]]; then
+        mwinit
+      fi
+    '';
   };
 
   programs.tmux-sessionizer = {
