@@ -1,4 +1,4 @@
 return {
-  cmd = {'rust-analyzer'},
-  filetypes = {'rust'}
+  cmd = { vim.env.RUST_ANALYZER or 'rust-analyzer' },
+  filetypes = { 'rust' }
 }
