@@ -43,6 +43,7 @@ in
       basedpyright
       clang-tools
       marksman
+      jdt-language-server
     ];
 
     plugins = with pkgs.vimPlugins; [
