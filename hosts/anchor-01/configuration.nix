@@ -470,6 +470,21 @@
   my.nut-watchdog.enable = true;
   power.ups = {
     enable = true;
+    package = pkgs.nut.overrideAttrs (old: {
+      version = "2.8.6-unstable-2026-10-10";
+      src = pkgs.fetchFromGitHub {
+        owner = "networkupstools";
+        repo = "nut";
+        rev = "a785726733fda7abdd6f6ba53c02eebac881da07";
+        hash = "sha256-9yjyD5uETA0hXq3Gm+zyCEOxnRvPZhV3VnpGy/BdiDQ=";
+      };
+      buildInputs = old.buildInputs ++ [ pkgs.glib ];
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.perl pkgs.python3 ];
+      configureFlags = old.configureFlags ++ [ "--with-systemdsysusersdir=$(out)/lib/sysusers.d" ];
+      preAutoreconf = ''
+        ./autogen.sh
+      '';
+    });
     mode = "netserver";
     ups.salicru = {
       driver = "nutdrv_qx";
