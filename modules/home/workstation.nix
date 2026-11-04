@@ -123,7 +123,7 @@
   programs.opencode = {
     enable = true;
     package = pkgs.writeShellScriptBin "opencode" ''
-      exec ${pkgs.nodejs_26}/bin/npx -y opencode-ai@latest "$@"
+      exec ${pkgs.nodejs_26}/bin/npx -y @opencode/cli "$@"
     '';
     settings = {
       autoupdate = false;
