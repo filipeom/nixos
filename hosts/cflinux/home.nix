@@ -22,6 +22,7 @@
   ];
 
   xdg.enable = true;
+  xdg.configFile."direnv/lib/brazil.sh".source = ../../dotfiles/direnv/brazil.sh;
 
   # programs
   programs.git = {
