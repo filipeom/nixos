@@ -46,6 +46,21 @@
 
   programs.zsh = {
     enable = true;
+    shellAliases = {
+      # brazil-build
+      bb = "brazil-build build";
+      bbr = "brazil-build release";
+      bbt = "brazil-build test";
+      bbc = "brazil-build compile";
+      # brazil-runtime-exec
+      bre = "brazil-runtime-exec";
+      # brazil workspace
+      bws = "brazil workspace show";
+      bwu = "brazil workspace use -p";
+      bwsync = "brazil workspace sync --metadata";
+      # brazil-path
+      bpath = "brazil-path";
+    };
     initContent = ''
       bindkey -s ^f "tmux-sessionizer\n"
 
