@@ -7,10 +7,10 @@
       credential.helper = "store";
     };
     ignores = [
-      ".files"
       ".direnv/"
       ".envrc"
       "_opam/"
+      ".claude"
     ];
   };
 }
