@@ -43,6 +43,7 @@
     hunspellDicts.pt_PT
     texliveFull
     zathura
+    evince
     zotero
   ];
 
@@ -66,6 +67,7 @@
   xdg.configFile = {
     "waybar".source = ../../dotfiles/waybar;
     "hypr/hyprlock.conf".source = ../../dotfiles/hypr/hyprlock.conf;
+    "zathura/zathurarc".source = ../../dotfiles/zathura/zathurarc;
   };
 
   xdg.portal = {

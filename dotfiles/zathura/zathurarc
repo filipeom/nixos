@@ -1,0 +1,23 @@
+# Clipboard
+set selection-clipboard clipboard
+set selection-notification false      # hide the "copied to clipboard" toast
+
+# Scrolling / zoom
+set scroll-step 80                    # wheel scroll distance (default 40)
+set scroll-full-overlap 0.15          # keep context when paging with space
+set zoom-step 15                      # zoom increment (default 10)
+
+# Layout
+set page-h-padding 8
+set page-v-padding 8                  # gaps between pages instead of glued
+
+# Statusbar shows just the filename
+set statusbar-basename true
+
+# Colors used when you toggle dark mode with Ctrl+R
+set recolor-darkcolor "#DDDDDD"
+set recolor-lightcolor "#1A1A1A"
+
+# History
+set continuous-hist-save true         # save history as you go (crash safety)
+set show-recent 20                    # entries in :open completion
